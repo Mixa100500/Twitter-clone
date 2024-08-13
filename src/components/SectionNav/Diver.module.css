@@ -1,0 +1,10 @@
+.diver {
+  height: 4px;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+}
+
+.active {
+  background-color: var(--blue-200);
+}

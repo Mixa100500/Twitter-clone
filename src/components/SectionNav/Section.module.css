@@ -1,0 +1,36 @@
+.--padding {
+  padding: 0 var(--padding-300);
+}
+
+.--bg {
+  background-color: var(--bg-main-color);
+}
+
+.button {
+  composes: --padding;
+  composes: --bg;
+  flex-basis: 50%;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.content {
+  position: relative;
+}
+
+.inner {
+  position: relative;
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
+  height: var(--height-header-section);
+  align-content: center;
+  color: var(--color-second-dark);
+  font-size: var(--fs-300);
+}
+
+.active {
+  color: inherit;
+}

@@ -1,0 +1,4 @@
+.icon {
+  max-width: var(--width-logo);
+  flex-basis: calc(50% + var(--width-logo) / 2);
+}

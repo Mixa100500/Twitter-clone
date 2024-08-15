@@ -6,8 +6,12 @@ import {useCheckActive, useSetIsFollowing} from "../../context/NavSection/NavSec
 
 import cn from "classnames";
 
+interface SectionProps {
+  text: string,
+  isFollowing: boolean,
+}
 
-export const SectionNav = (props) => {
+export const SectionNav = (props: SectionProps) => {
   const { text, isFollowing } = props
   const isActive = useCheckActive(isFollowing)
   const setIsFollowing = useSetIsFollowing()

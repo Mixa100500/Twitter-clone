@@ -1,10 +1,14 @@
 'use client'
 
-import {createContext, useCallback, useContext, useState} from "react";
+import {createContext, ReactNode, useCallback, useContext, useState} from "react";
 const followingActiveContext = createContext<boolean | null>(null)
-const setIsFollowingContext = createContext<(section: boolean) => void | null>(null)
+const setIsFollowingContext = createContext<((section: boolean) => void) | null>(null)
 
-export const NavSectionProvider = (props) => {
+interface Props {
+  children: ReactNode,
+}
+
+export const NavSectionProvider = (props: Props) => {
   const [followingActive, setFollowingActive] = useState(false)
 
   const setIsFollowing = useCallback((section: boolean) => {
@@ -18,7 +22,7 @@ export const NavSectionProvider = (props) => {
   </followingActiveContext.Provider>
 }
 
-export const useCheckActive = (isFollowing) => {
+export const useCheckActive = (isFollowing: boolean) => {
   const isFollowingActive = useContext(followingActiveContext)
   if (isFollowingActive === null) {
     throw new Error('useFollowingActive must be called in the context provider')

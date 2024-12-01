@@ -1,7 +1,11 @@
-import logoS from './LogoIcon.module.css'
-export const LogoIcon = () => {
+type Props = {
+  classname?: string,
+}
+
+export const LogoIcon = ({ classname }: Props) => {
+
   return (
-    <svg className={logoS.icon} viewBox="0 0 24 24" aria-hidden="true">
+    <svg className={classname} viewBox="0 0 24 24" aria-hidden="true">
       <g>
         <path
           fill='currentColor'

@@ -2,5 +2,5 @@
     display: flex;
     height: 100%;
     align-items: center;
-    flex-basis: calc(50% - var(--width-logo) / 2);
+    flex-basis: calc(50% - var(--width-logo-100) / 2);
 }

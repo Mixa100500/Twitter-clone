@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Public_Sans } from "next/font/google";
 import "./globals.css";
 import bodyS from './Layout.module.css'
 import './reset.css'
-const inter = Montserrat({
+
+
+const inter = Public_Sans({
     subsets: ["latin"],
-    weight: '400',
+    weight: ['400', '700'],
     style: 'normal'
 });
 

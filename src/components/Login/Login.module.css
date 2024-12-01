@@ -1,0 +1,8 @@
+.sign {
+  height: 40px;
+  padding: 0 16px;
+  border-radius:  9999px;
+  color: rgb(0, 0, 0);
+  background-color: white;
+  font-weight: 700;
+}

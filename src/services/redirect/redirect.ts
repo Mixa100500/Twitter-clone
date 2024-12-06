@@ -4,7 +4,7 @@ import {redirect} from "next/navigation";
 import {AUTHORIZATION, ORIGIN} from "../../../next.config.ts";
 import {decryptRandomValue, DIVER_STATE} from "@/utils/cripto.ts";
 import {cookies} from "next/headers";
-import {cookiesMap} from "@/utils/config.ts";
+import {cookiesMap, ResponseToken} from "@/utils/config.ts";
 
 type canString = string | null
 
@@ -17,29 +17,24 @@ export async function authByCode (code: canString, stateFormUrl: canString) {
 
   if(code_verifier === undefined) {
     redirect('/login')
-    return
-  }
-
-  if(code === null) {
-    redirect('/login')
-    return
-  }
-
-  if(stateFormUrl === null) {
-    redirect('/login')
-    return
   }
 
   if(encryptedStateWithRoute === undefined) {
     redirect('/login')
-    return
+  }
+
+  if(code === null) {
+    redirect('/login')
+  }
+
+  if(stateFormUrl === null) {
+    redirect('/login')
   }
 
   const parts = encryptedStateWithRoute.split(DIVER_STATE)
 
   if(parts[1] === undefined) {
     redirect('/login')
-    return
   }
 
   if(parts[0] === undefined) {
@@ -51,7 +46,6 @@ export async function authByCode (code: canString, stateFormUrl: canString) {
 
   if(stateFromCookies === stateFormUrl) {
     redirect('/401');
-    return;
   }
   const redirect_uri = ORIGIN + '/redirect';
 
@@ -69,10 +63,26 @@ export async function authByCode (code: canString, stateFormUrl: canString) {
     }),
   })
 
-  const resposne = await accessToken.json();
-  console.log('redirect callback')
-  console.log(resposne);
+  const response: ResponseToken = await accessToken.json();
 
-  console.log(accessToken);
-  console.log('was route:', route)
+  cookiesStore.set({
+    name: cookiesMap.accessToken,
+    value: response.access_token,
+    secure: true,
+    httpOnly: true,
+    sameSite: 'lax',
+    maxAge: 7200,
+  })
+
+  cookiesStore.set({
+    name: cookiesMap.refreshToken,
+    value: response.refresh_token,
+    secure: true,
+    httpOnly: true,
+    sameSite: 'lax',
+    // 6 months
+    maxAge: 15552000,
+  })
+
+  redirect(route)
 }

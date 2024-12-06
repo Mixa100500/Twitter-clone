@@ -10,7 +10,6 @@
 
   --grey-600: rgb(47, 51, 54);
 
-
   --padding-100: 0px;
   --padding-200: 0px;
   --padding-300: 16px;
@@ -26,7 +25,7 @@
   --color-main-dark-: var(--white-100);
   --color-second-dark: var(--white-400);
 
-  --width-logo-100: 24px;
+  --width-logo-100: 20px;
 
   --height-header-section: var(--height-300);
 

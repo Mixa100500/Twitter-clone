@@ -1,28 +1,28 @@
 .active {
-    background-color: var(--blue-200);
+  background-color: var(--blue-200);
 }
 
 .header {
-    height: var(--height-header-section);
-    padding: 0 var(--padding-300);
-    display: flex;
-    flex-direction: row;
+  height: var(--height-header-section);
+  padding: 0 var(--padding-300);
+  display: flex;
+  flex-direction: row;
 }
 
 .section {
-    padding: 0 var(--padding-300);
-    display: flex;
-    border-bottom: 1px solid var(--br-main-dark);
+  padding: 0 var(--padding-300);
+  display: flex;
+  border-bottom: 1px solid var(--br-main-dark);
 }
 
 .asideWrapper {
-    height: var(--height-300);
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    border-top: 1px solid var(--br-main-dark);
+  height: var(--height-300);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  border-top: 1px solid var(--br-main-dark);
 }
 
 //.img {
@@ -45,23 +45,40 @@
 //}
 
 .imgWrapper {
-    flex-basis: 16.666%;
-    height: var(--height-300);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  flex-basis: 16.666%;
+  height: var(--height-300);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .imgSvg {
-    width: 26px;
-    height: 26px;
-}
-
-.imgPath {
-    fill: currentColor;
+  width: 26px;
+  height: 26px;
 }
 
 .logo {
-    flex-basis: calc(50% + var(--width-logo-100) / 2);
-    max-width: var(--width-logo-100);
+  width: 20px;
+  height: 20px;
+}
+
+.profile {
+  width: 32px;
+  height: 32px;
+}
+
+.imgPath {
+  fill: currentColor;
+}
+
+.logoWrapper {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  flex-basis: calc(50% - var(--width-logo-100) / 2);
+}
+
+.logo {
+  flex-basis: calc(50% + var(--width-logo-100) / 2);
+  max-width: var(--width-logo-100);
 }

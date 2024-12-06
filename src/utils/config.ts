@@ -4,3 +4,11 @@ export const cookiesMap = {
   accessToken: 'accessToken',
   refreshToken: 'refreshToken',
 }
+
+export type ResponseToken = {
+  token_type: string,
+  expires_in: number,
+  access_token: string,
+  scope: string
+  refresh_token: string
+}

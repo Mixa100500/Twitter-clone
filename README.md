@@ -1,5 +1,21 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## env. (required)
+
+https://developer.twitter.com/en/portal/dashboard
+
+TWITTER_CLIENT_ID=<your-twitter-client-id> <br />
+TWITTER_CLIENT_SECRET=<your-twitter-client-secret>
+
+/src/utils/crypto.ts
+
+```javascript
+ const ENCRYPT_PASSWORD = generateRandomString(72)
+ const ENCRYPT_SALT_HEX = uint8ArrayToHex(crypto.getRandomValues(new Uint8Array(16)))
+```
+
+ORIGIN=<your-website-origin>
+
 ## Getting Started
 
 First, run the development server:

@@ -10,13 +10,12 @@ export function Redirect () {
   useEffect(() => {
     const code = searchParams.get('code')
     const state = searchParams.get('state')
-    // if(state === null && code === null) {
-    //   console.log('login client')
-    //   router.push('/login')
-    //   return
-    // }
+    if(state === null && code === null) {
+      router.push('/login')
+      return
+    }
 
     authByCode(code, state)
-  }, []);
+  }, [router, searchParams]);
   return null
 }

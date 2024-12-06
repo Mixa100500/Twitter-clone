@@ -1,0 +1,6 @@
+.icon {
+  background: currentColor;
+  mask-position: center center;
+  mask-repeat: no-repeat;
+  display: block;
+}

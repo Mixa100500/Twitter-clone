@@ -1,5 +1,6 @@
 import pageS from "@/app/redirect/page.module.scss";
 import {Redirect} from "@/components/Redirect/Redirect.tsx";
+import {Suspense} from "react";
 
 export default function page () {
   return (
@@ -12,7 +13,9 @@ export default function page () {
           <circle className={pageS.bottomCircle} cx='16' cy='16' fill='none' r='14' strokeWidth='4'></circle>
         </g>
       </svg>
-      <Redirect/>
+      <Suspense>
+        <Redirect/>
+      </Suspense>
     </>
   )
 }

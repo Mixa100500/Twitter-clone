@@ -3,7 +3,6 @@ type Props = {
 }
 
 export const LogoIcon = ({ classname }: Props) => {
-
   return (
     <svg className={classname} viewBox="0 0 24 24" aria-hidden="true">
       <g>

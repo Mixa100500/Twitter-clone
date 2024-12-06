@@ -6,9 +6,9 @@ import './reset.css'
 
 
 const inter = Public_Sans({
-    subsets: ["latin"],
-    weight: ['400', '700'],
-    style: 'normal'
+  subsets: ["latin"],
+  weight: ['400', '700'],
+  style: 'normal'
 });
 
 export const metadata: Metadata = {

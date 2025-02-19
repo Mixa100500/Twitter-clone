@@ -5,8 +5,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 https://developer.twitter.com/en/portal/dashboard
 
 TWITTER_CLIENT_ID=<your-twitter-client-id> <br />
-TWITTER_CLIENT_SECRET=<your-twitter-client-secret>
-NEXT_PUBLIC_ORIGIN=origin <br />
+TWITTER_CLIENT_SECRET=<your-twitter-client-secret> <br />
+NEXT_PUBLIC_ORIGIN=origin
 
 /src/utils/crypto.ts
 

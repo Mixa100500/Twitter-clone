@@ -1,3 +1,5 @@
+'use client'
+
 import {MediaByKey, TweetLineNormalized} from "@/feature/tweets/types.ts";
 
 export async function getTweets (id: string, paginationToken?: string ): Promise<TweetLineNormalized> {

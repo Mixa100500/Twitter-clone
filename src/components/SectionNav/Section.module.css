@@ -13,6 +13,10 @@
 }
 
 .button:hover {
+  background-color: var(--bg-hover);
+}
+
+.button:hover {
   cursor: pointer;
 }
 

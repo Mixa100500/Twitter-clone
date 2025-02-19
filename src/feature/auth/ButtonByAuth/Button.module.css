@@ -1,0 +1,11 @@
+.button {
+  border-radius: 9999px;
+  background-color: var(--blue-200);
+  min-height: 34px;
+  position: absolute;
+  right: 11px;
+}
+
+.buttonInner {
+  padding: 0 15px;
+}

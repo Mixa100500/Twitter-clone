@@ -10,6 +10,7 @@ TWITTER_CLIENT_SECRET=<your-twitter-client-secret>
 /src/utils/crypto.ts
 
 ```javascript
+ const JWT_SECRET = generateRandomString(30) 
  const ENCRYPT_PASSWORD = generateRandomString(72)
  const ENCRYPT_SALT_HEX = uint8ArrayToHex(crypto.getRandomValues(new Uint8Array(16)))
 ```

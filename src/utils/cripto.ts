@@ -1,6 +1,25 @@
-//https://developer.spotify.com/documentation/web-api/tutorials/code-pkce-flow
+import {SignJWT, jwtVerify, JWTPayload} from "jose";
+import {ENCRYPT_PASSWORD, ENCRYPT_SALT_HEX, JWT_SECRET} from "../../next.config.ts";
+import {MeResponse} from "@/app/api/tweets/search/recent/route.ts";
 
-import {ENCRYPT_PASSWORD, ENCRYPT_SALT_HEX} from "../../next.config.ts";
+const keyJwt = new TextEncoder().encode(JWT_SECRET);
+
+export async function encryptJwt(payload: MeResponse) {
+  return await new SignJWT(payload)
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime("90days")
+    .sign(keyJwt);
+}
+
+export async function decryptJwt(input: string): Promise<JWTPayload> {
+  const { payload } = await jwtVerify(input, keyJwt, {
+    algorithms: ["HS256"],
+  });
+  return payload;
+}
+
+//https://developer.spotify.com/documentation/web-api/tutorials/code-pkce-flow
 
 const generateRandomString = (length: number): string => {
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -161,7 +180,7 @@ export async function decryptRandomValue (value: string): Promise<string> {
 }
 
 // https://auth0.com/docs/get-started/authentication-and-authorization-flow/implicit-flow-with-form-post/mitigate-replay-attacks-when-using-the-implicit-flow#generate-a-cryptographically-random-nonce
-// function randomString(length: number): string {
+// function randomString(length: fortmats): string {
 //   let charset = '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz+/'
 //   let result = ''
 

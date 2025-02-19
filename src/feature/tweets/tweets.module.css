@@ -1,0 +1,257 @@
+.page {
+
+}
+
+.timeline {
+  min-height: 100svh;
+}
+
+.profilePicture {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+}
+
+.profileWrapper {
+  width: 38px;
+  margin-right: 8px;
+}
+
+.footerSpace {
+  height: 54px;
+}
+
+@media (min-width: 400px) {
+  .footerSpace {
+   display: none;
+  }
+}
+
+.header {
+  padding-bottom: 2px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+}
+
+.checkMark {
+  color: var(--blue-200);
+  width: 17px;
+  height: 17px;
+  margin-left: 2px;
+}
+
+.dot {
+  color: var(--color-second-dark);
+  padding: 0 4px;
+}
+
+.name {
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: hidden;
+}
+
+.username {
+  color: var(--color-second-dark);
+  /*position: absolute;*/
+  /*left: 0;*/
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.time {
+  color: var(--color-second-dark);
+}
+
+.dots {
+  height: 13px;
+  width: 13px;
+  color: var(--color-second-dark);
+}
+
+/* tweet */
+
+.retweetedPined {
+  display: flex;
+  width: 100%;
+  color: var(--color-second-dark);
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.retweetedPinedImage {
+  width: 15px;
+  height: 15px;
+}
+
+.retweetedPinedLeft {
+  flex-basis: 38px;
+  margin-right: 8px;
+  display: flex;
+  justify-content: end;
+}
+
+.tweet {
+  border-bottom: 1px rgb(47, 51, 54) solid;
+  padding: 11px 15px;
+  position: relative;
+}
+
+.flex {
+  display: flex;
+}
+
+.headerMiddle {
+  display: flex;
+  align-items: center;
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.article {
+  flex-basis: 100%;
+}
+
+.loading {
+  height: 120px;
+}
+
+.quoted {
+  border: 1px solid var(--grey-600);
+  border-radius: 16px;
+  margin-top: 11px;
+  overflow: hidden;
+}
+
+.quotedInner {
+  padding: 11px;
+}
+
+.articleBody {
+  line-height: 19px;
+  white-space: pre-wrap;
+}
+
+.innerText {
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: hidden;
+}
+
+.innerProfilePicture {
+  width: 23px;
+  height: 23px;
+}
+
+.headerBody {
+  display: inline-block;
+  min-height: 21px;
+}
+
+.showMore {
+  color: var(--blue-200);
+  line-height: 19px;
+  background-color: inherit;
+}
+
+/* footer */
+
+.footer {
+  display: flex;
+  margin-top: 11px;
+  justify-content: space-between;
+}
+
+.footerRight {
+  display: flex;
+  gap: 2px;
+}
+
+@media (min-width: 320px) {
+  .footerRight {
+    gap: 8px;
+  }
+}
+
+.footerIcon {
+  width: 15px;
+  height: 15px;
+}
+
+.footerButton {
+  font-size: 12px;
+  display: flex;
+  color: var(--color-second-dark);
+}
+
+@media (min-width: 300px) {
+  .footerButton {
+    gap: 2px;
+  }
+}
+
+/* RefMedia */
+
+.refMedia {
+  display: flex;
+}
+
+.oneImage {
+  max-width: 100%;
+}
+
+.oneImageContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.oneVideo {
+  width: 100%;
+}
+
+.tweetPlayer {
+  border-radius: 16px;
+}
+
+.manyImage {
+  flex: 1;
+  max-width: calc(50% - 1px);
+  object-fit: contain;
+  max-height: 100%;
+}
+
+.singeImagePlaceholder {
+  aspect-ratio: 1/1;
+}
+
+.fewImageContainer {
+  aspect-ratio: 2/1;
+  display: flex;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+
+.marginTop {
+  margin-top: 11px;
+}
+
+
+.repostText {
+  -webkit-line-clamp: 10;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: hidden;
+}

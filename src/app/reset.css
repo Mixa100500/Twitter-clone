@@ -49,7 +49,9 @@ table {
 
 /* local */
 
+
 button {
     border: 0;
     padding: 0;
+    background-color: inherit;
 }

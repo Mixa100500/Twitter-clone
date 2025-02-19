@@ -5,6 +5,7 @@
   --blue-200: rgb(29, 155, 240);
 
   --black-000: black;
+  --black-100: rgb(16 16 16);
 
   --fs-300: 15px;
 
@@ -17,9 +18,12 @@
   --padding-500: 24px;
 
   --height-300: 53px;
+
 }
 
 :root {
+  --bg-hover : rgba(231, 233, 234, 0.1);
+
   --bg-main-color: var(--black-000);
 
   --color-main-dark-: var(--white-100);
@@ -29,7 +33,12 @@
 
   --height-header-section: var(--height-300);
 
-  --br-main-dark: var(--grey-600)
+  --br-main-dark: var(--grey-600);
+
+  --navbar-width-desctop: 68px;
+
+  --placeholder-primary: var(--black-100);
+  --placeholder-secondary: var(--grey-600);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -40,13 +49,37 @@
 
 html,
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
+  font-size: 14px;
 }
 
+a:hover,
+button:hover {
+  cursor: pointer;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.placeholder {
+  animation: placeholder ease-in-out 2s infinite;
+}
+
+@keyframes placeholder {
+  0% {
+    background-color: var(--placeholder-primary);
+  }
+  50% {
+    background-color: var(--placeholder-secondary);
+  }
+  100% {
+    background-color: var(--placeholder-primary);
+  }
+}
 
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
 }
+

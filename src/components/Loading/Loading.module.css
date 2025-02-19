@@ -1,0 +1,39 @@
+.svg {
+  height: 32px;
+  width: 32px;
+}
+
+@keyframes circle {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animation {
+  transform-origin: center;
+  animation-name: circle;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  height: 1px;
+}
+
+.topCircle {
+  stroke: var(--blue-200);
+  opacity: 0.2;
+}
+
+.bottomCircle {
+  stroke: var(--blue-200);
+  stroke-dasharray: 80px;
+  stroke-dashoffset: 60px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

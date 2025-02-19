@@ -3,6 +3,8 @@ export const cookiesMap = {
   codeVerifier: 'codeVerifier',
   accessToken: 'accessToken',
   refreshToken: 'refreshToken',
+  idToken: 'idToken',
+  authorized: 'authorized',
 }
 
 export type ResponseToken = {

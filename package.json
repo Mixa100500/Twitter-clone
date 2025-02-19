@@ -7,24 +7,31 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type": "tsc --noEmit"
+    "type": "tsc --noEmit",
+    "analize": "ANALYZE=true npm run build"
   },
   "dependencies": {
+    "@next/bundle-analyzer": "^15.1.4",
+    "@tanstack/react-virtual": "^3.11.2",
     "classnames": "^2.5.1",
-    "next": "15.0.4-canary.20",
-    "react": "19.0.0-rc-380f5d67-20241113",
-    "react-dom": "19.0.0-rc-380f5d67-20241113",
-    "server-only": "^0.0.1"
+    "hls.js": "^1.5.18",
+    "jose": "^5.9.6",
+    "next": "^15.1.0",
+    "react": "^19.0.0-rc.1",
+    "react-dom": "^19.0.0-rc.1",
+    "server-only": "^0.0.1",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.4.0",
     "@types/node": "^20",
     "@types/react": "npm:types-react@19.0.0-rc.1",
     "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
     "@typescript-eslint/eslint-plugin": "^8.14.0",
     "@typescript-eslint/parser": "^8.14.0",
+    "css-loader": "^7.1.2",
     "eslint": "^8",
     "eslint-config-next": "15.0.4-canary.20",
-    "sass": "^1.79.4",
     "typescript": "^5"
   },
   "overrides": {

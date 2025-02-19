@@ -8,12 +8,17 @@ type Props = {
   name: string
 }
 
+const oldMaskImage = 'WebkitMaskImage'
+
 export function Icon (props: Props) {
   const classes = classNames(props.class, IconS.icon)
+  const value = `url(/svg/${props.name}.svg)`
 
   const style = {
-    maskImage: `url(/svg/${props.name}.svg)`
+    [oldMaskImage]: value,
+    maskImage: value,
   }
+
   return (
     <span className={classes} style={style}></span>
   )

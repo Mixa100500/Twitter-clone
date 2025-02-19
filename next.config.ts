@@ -17,6 +17,11 @@ function getOrigin (): string {
   if(IS_DEVELOP) {
     return 'http://localhost:3000'
   }
+  // const VERCEL_URL = process.env.VERCEL_URL
+  //
+  // if(VERCEL_URL) {
+  //   return VERCEL_URL
+  // }
 
   return getEnvVariable('NEXT_PUBLIC_ORIGIN')
 }

@@ -6,6 +6,7 @@ https://developer.twitter.com/en/portal/dashboard
 
 TWITTER_CLIENT_ID=<your-twitter-client-id> <br />
 TWITTER_CLIENT_SECRET=<your-twitter-client-secret>
+NEXT_PUBLIC_ORIGIN=origin <br />
 
 /src/utils/crypto.ts
 

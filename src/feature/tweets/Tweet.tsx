@@ -219,7 +219,7 @@ function TweetFooter (props: FooterProps) {
       </button>
       <div className={style.footerRight}>
         <button className={style.footerButton} aria-label='Bookmark'>
-          <Icon name='Bookmark' class={style.footerIcon}/>
+          <Icon name='bookmark' class={style.footerIcon}/>
         </button>
         <button className={style.footerButton} aria-label='Share post'>
           <Icon name='share' class={style.footerIcon}/>

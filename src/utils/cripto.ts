@@ -125,7 +125,7 @@ function getKey(keyMaterial: CryptoKey): Promise<CryptoKey> {
     {
       "name": "PBKDF2",
       salt: ENCRYPT_SALT,
-      "iterations": 600000,
+      "iterations": 6000,
       "hash": "SHA-256"
     },
     keyMaterial,

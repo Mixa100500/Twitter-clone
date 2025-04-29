@@ -1,5 +1,8 @@
 import 'server-only'
-import {AUTHORIZATION} from "../../../../next.config.ts";
+// import {TWITTER_CLIENT_ID, TWITTER_CLIENT_SECRET} from "../../../../next.config.ts";
+// import {AUTHORIZATION} from "../../../../next.config.ts";
+const AUTHORIZATION = process.env.TWITTER_CLIENT_ID + ':' + process.env.TWITTER_CLIENT_SECRET
+
 const url = 'https://api.x.com/2/oauth2/token';
 
 export async function refresh (token: string) {

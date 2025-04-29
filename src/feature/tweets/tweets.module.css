@@ -96,7 +96,7 @@
   flex-basis: 38px;
   margin-right: 8px;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .tweet {
@@ -223,7 +223,7 @@
 }
 
 .tweetPlayer {
-  border-radius: 16px;
+  /*border-radius: 16px;*/
 }
 
 .manyImage {

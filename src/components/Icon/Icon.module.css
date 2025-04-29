@@ -1,4 +1,6 @@
 .icon {
+  mask-image: var(--icon-url);
+  -webkit-mask-image: var(--icon-url);
   background: currentColor;
   mask-position: center center;
   mask-repeat: no-repeat;

@@ -2,27 +2,49 @@ import {TweetLineUnresolved} from "@/feature/tweets/types.ts";
 
 export const firstResult: TweetLineUnresolved = {
   "data": [
+    // {
+    //   "created_at": "2025-01-23T02:17:19.000Z",
+    //   "referenced_tweets": [
+    //     {
+    //       "type": "quoted",
+    //       "id": "1882229899265773931"
+    //     }
+    //   ],
+    //   "text": "🤨 https://t.co/vNtBrwG3sM",
+    //   "public_metrics": {
+    //     "retweet_count": 1206,
+    //     "reply_count": 1261,
+    //     "like_count": 7143,
+    //     "quote_count": 65,
+    //     "bookmark_count": 218,
+    //     "impression_count": 706058
+    //   },
+    //   "author_id": "44196397",
+    //   "id": "1882251232439623962",
+    //   "edit_history_tweet_ids": [
+    //     "1882251232439623962"
+    //   ]
+    // },
     {
-      "created_at": "2025-01-23T02:17:19.000Z",
-      "referenced_tweets": [
-        {
-          "type": "quoted",
-          "id": "1882229899265773931"
-        }
-      ],
-      "text": "🤨 https://t.co/vNtBrwG3sM",
-      "public_metrics": {
-        "retweet_count": 1206,
-        "reply_count": 1261,
-        "like_count": 7143,
-        "quote_count": 65,
-        "bookmark_count": 218,
-        "impression_count": 706058
-      },
+      "id": "1903807726586634452",
       "author_id": "44196397",
-      "id": "1882251232439623962",
+      "public_metrics": {
+        "retweet_count": 5901,
+        "reply_count": 3374,
+        "like_count": 46871,
+        "quote_count": 321,
+        "bookmark_count": 4238,
+        "impression_count": 10025875
+      },
+      "text": "https://t.co/ZEbm1vcQx8",
+      "created_at": "2025-03-23T13:55:07.000Z",
+      "attachments": {
+        "media_keys": [
+          "7_1903797818768134144"
+        ]
+      },
       "edit_history_tweet_ids": [
-        "1882251232439623962"
+        "1903807726586634452"
       ]
     },
     {
@@ -305,10 +327,10 @@ export const firstResult: TweetLineUnresolved = {
   "includes": {
     "users": [
       {
+        "name": "Elon Musk",
+        "profile_image_url": "https://pbs.twimg.com/profile_images/1893803697185910784/Na5lOWi5_normal.jpg",
         "username": "elonmusk",
-        "id": "44196397",
-        "profile_image_url": "https://pbs.twimg.com/profile_images/1874558173962481664/8HSTqIlD_normal.jpg",
-        "name": "Elon Musk"
+        "id": "44196397"
       },
       {
         "username": "Cernovich",
@@ -682,8 +704,38 @@ export const firstResult: TweetLineUnresolved = {
     ],
     "media": [
       {
+        "type": "video",
+        "media_key": "7_1903797818768134144",
+        "height": 1080,
+        "preview_image_url": "https://pbs.twimg.com/ext_tw_video_thumb/1903797818768134144/pu/img/7ae62L-oSZKXjMbc.jpg",
+        "variants": [
+          {
+            "bit_rate": 256000,
+            "content_type": "video/mp4",
+            "url": "https://video.twimg.com/ext_tw_video/1903797818768134144/pu/vid/avc1/280x270/rE5sadNROMEC1xwT.mp4?tag=12"
+          },
+          {
+            "bit_rate": 832000,
+            "content_type": "video/mp4",
+            "url": "https://video.twimg.com/ext_tw_video/1903797818768134144/pu/vid/avc1/372x360/O9Xw69lidWqI6hVU.mp4?tag=12"
+          },
+          {
+            "bit_rate": 2176000,
+            "content_type": "video/mp4",
+            "url": "https://video.twimg.com/ext_tw_video/1903797818768134144/pu/vid/avc1/746x720/-EYOpErF0G9McC_o.mp4?tag=12"
+          },
+          {
+            "content_type": "application/x-mpegURL",
+            "url": "https://video.twimg.com/ext_tw_video/1903797818768134144/pu/pl/41dMrLQ7DVsbmCeL.m3u8?tag=12"
+          }
+        ],
+        "width": 1120
+      },
+      {
         "media_key": "7_1882166965273243648",
         "preview_image_url": "https://pbs.twimg.com/ext_tw_video_thumb/1882166965273243648/pu/img/PwyObigLqHNK3FGm.jpg",
+        "height": 720,
+        "width": 1280,
         "variants": [
           {
             "bit_rate": 256000,
@@ -710,6 +762,8 @@ export const firstResult: TweetLineUnresolved = {
       {
         "media_key": "7_1757816641922940928",
         "preview_image_url": "https://pbs.twimg.com/ext_tw_video_thumb/1757816641922940928/pu/img/QglMZZKfs7CFmYx8.jpg",
+        "height": 1080,
+        "width": 1920,
         "variants": [
           {
             "bit_rate": 832000,

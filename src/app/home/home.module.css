@@ -59,8 +59,8 @@
   right: 0;
   left: 0;
   display: flex;
-  border-top: 1px solid var(--br-main-dark);
   background-color: var(--black-000);
+  border-top: 1px solid var(--br-main-dark);
 }
 
 @media (min-width: 400px) {
@@ -76,6 +76,7 @@
     width: var(--navbar-width-desctop);
     padding: 0 4px;
     justify-content: space-between;
+    border: 0;
   }
 }
 

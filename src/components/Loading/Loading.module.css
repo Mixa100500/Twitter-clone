@@ -22,12 +22,18 @@
 }
 
 .topCircle {
-  stroke: var(--blue-200);
   opacity: 0.2;
 }
 
-.bottomCircle {
+.blue {
   stroke: var(--blue-200);
+}
+
+.white {
+  stroke: white;
+}
+
+.bottomCircle {
   stroke-dasharray: 80px;
   stroke-dashoffset: 60px;
 }

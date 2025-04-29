@@ -1,0 +1,408 @@
+.bar {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  padding: 0 8px;
+  height: 59px;
+  background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.77));
+}
+
+.mouseLeaveTarget {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.mouseTargetPlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.timeLine {
+  height: 19px;
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.hideContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.hide {
+  visibility: hidden;
+}
+
+.timeLineContainer {
+  height: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.barCurrent {
+  background-color: rgb(255, 255, 255);;
+  height: 2px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-radius: 8px;
+}
+
+.barButtons {
+  height: 40px;
+  padding-bottom: 2px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.svg {
+  height: 19px;
+  width: 19px;
+}
+
+.barRight {
+  height: 34px;
+  display: flex;
+  align-items: center;
+}
+
+.timeLine:hover .barCurrent {
+  height: 4px;
+}
+
+.timeLineActive .barCurrent {
+  height: 4px;
+}
+
+.barBuffered {
+  background-color: rgba(255, 255, 255, 0.33);
+  height: 2px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-radius: 8px;
+}
+
+@media (any-hover: hover) {
+  .timeLine:hover .barBuffered {
+    height: 4px;
+  }
+}
+
+.timeLineActive .barBuffered {
+  height: 4px;
+}
+
+.circleMover {
+  width: 100%;
+  height: 2px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circleContainer {
+  position: absolute;
+  right: 0;
+  width: 0;
+  display: flex;
+  align-items: center;
+}
+
+@media (any-hover: hover) {
+  .timeLine:hover .circleMover {
+    height: 4px;
+  }
+}
+
+.timeLineActive .circleMover {
+  height: 4px;
+}
+
+.circle {
+  position: absolute;
+  left: 0;
+  opacity: 0;
+  height: 16px;
+  width: 16px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background-color: rgb(255 255 255);
+  pointer-events: auto;
+}
+
+.timeLine:hover .circle {
+  animation: fade-in-circle 0.2s ease-in forwards;
+}
+
+.timeLineActive .circle {
+  animation: fade-in-circle 0.2s ease-in forwards;
+}
+
+.circle::after {
+  content: '';
+  border-radius: 50%;
+  height: 32px;
+  width: 32px;
+  background-color: rgb(255 255 255);
+  opacity: 0;
+  display: block;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+}
+
+@media (any-hover: hover) {
+  .circle:hover::after {
+    animation: fade-in-icon 0.2s ease-in forwards;
+  }
+}
+
+@keyframes fade-in-icon {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0.1;
+  }
+}
+
+
+
+@keyframes fade-in-circle {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.play {
+  height: 33px;
+  width: 33px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.play::after {
+  content: '';
+  border-radius: 50%;
+  height: 32px;
+  width: 32px;
+  background-color: rgb(255 255 255);
+  opacity: 0;
+  display: block;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+}
+
+@media (any-hover: hover) {
+  .play:hover::after {
+    animation: fade-in-icon 0.2s ease-in forwards;
+  }
+}
+
+.playSvg {
+  height: 16px;
+  width: 16px;
+}
+
+/*timer*/
+
+.timer {
+  position: absolute;
+  bottom: 11px;
+  left: 11px;
+  margin: 0 -8px;
+  padding: 0 8px;
+  border-radius: 4px;
+  line-height: 19px;
+  font-size: 12px;
+  background-color: black;
+}
+
+.time {
+  margin: 0 4px;
+}
+
+/*volume*/
+
+.volumeButton {
+  width: 34px;
+  height: 34px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.volumeButton:after {
+  content: '';
+  border-radius: 50%;
+  height: 32px;
+  width: 32px;
+  background-color: rgb(255 255 255);
+  opacity: 0;
+  display: block;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+}
+
+@media (any-hover: hover) {
+  .volumeButton:hover::after {
+    animation: fade-in-icon 0.2s ease-in forwards;
+  }
+}
+
+.volumeContainer {
+  position: relative;
+}
+
+/*volumeDropUp*/
+
+
+.volumeDropUpBody {
+  height: 122px;
+  padding: 15px 11px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin-bottom: 34px;
+  display: none;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+}
+
+.volumeBarContainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.volumeBar {
+  width: 4px;
+  background-color: rgba(255, 255, 255, 0.33);
+  height: 100%;
+  border-radius: 4px;
+}
+
+.volumeCurrent {
+  position: absolute;
+  background-color: rgb(255 255 255);
+  width: 4px;
+  height: 100%;
+  border-radius: 4px;
+  bottom: 0;
+}
+
+.volumeCircleContainer {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  bottom: 0;
+}
+
+.volumeCircle {
+  position: absolute;
+  bottom: 0;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background-color: rgb(255 255 255);
+  pointer-events: auto;
+  transform: translateY(50%);
+}
+
+.volumeCircle::after {
+  content: '';
+  border-radius: 50%;
+  height: 32px;
+  width: 32px;
+  background-color: rgb(255 255 255);
+  opacity: 0;
+  display: block;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+}
+
+@media (any-hover: hover) {
+  .volumeCircle:hover::after {
+    animation: fade-in-icon 0.2s ease-in forwards;
+  }
+}
+
+.volumeDropUpUpBodyShow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Fullscreen */
+
+.fullScreenButton {
+  width: 34px;
+  height: 34px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fullScreenButton .fullscreenHover:after {
+  content: '';
+  border-radius: 50%;
+  height: 32px;
+  width: 32px;
+  background-color: rgb(255 255 255);
+  opacity: 0;
+  display: block;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+}
+
+@media (any-hover: hover) {
+  .fullScreenButton:hover .fullscreenHover::after {
+    animation: fade-in-icon 0.2s ease-in forwards;
+  }
+}
+
+.hide {
+  visibility: hidden;
+}
+
+.preloadSvg {
+  visibility: hidden;
+  width: 0;
+  height: 0;
+}
+

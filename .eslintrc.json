@@ -3,6 +3,7 @@
   "plugins": ["@typescript-eslint"],
   "parser": "@typescript-eslint/parser",
   "rules": {
+    "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/array-type": [
       "error",
       {

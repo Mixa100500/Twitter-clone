@@ -1,5 +1,59 @@
 import type {NextConfig} from 'next'
+import { Compiler } from 'webpack';
 // import withBundleAnalyzer from '@next/bundle-analyzer';
+import path from 'path';
+import generateIconsIndex from './src/scripts/svgProcessor'
+
+class WatchIconsPlugin {
+  private iconsDir: string;
+
+  constructor(iconsDir: string) {
+    this.iconsDir = iconsDir;
+  }
+
+  apply(compiler: Compiler) {
+    compiler.hooks.afterCompile.tap('WatchIconsPlugin', (compilation) => {
+      compilation.contextDependencies.add(this.iconsDir);
+    });
+  }
+}
+
+interface CompilerWithModifiedFiles extends Compiler {
+  modifiedFiles?: Set<string>;
+}
+
+class SvgChangePlugin {
+  apply(compiler: Compiler): void {
+    // Cast the compiler to include modifiedFiles
+    const compilerWithModifiedFiles = compiler as CompilerWithModifiedFiles;
+
+    compiler.hooks.watchRun.tapAsync(
+      'SvgChangePlugin',
+      async (compilation, callback) => {
+        const modifiedFiles = compilerWithModifiedFiles.modifiedFiles;
+        // Check if any of the modified files end with `.svg`
+        const hasSvgChanges = modifiedFiles
+          ? Array.from(modifiedFiles).some((file) => file.endsWith('svg'))
+          : false;
+
+        if (hasSvgChanges) {
+          console.log('[SvgChangePlugin] Detected changes in .svg files. Running generateIconsIndex...');
+          try {
+            await generateIconsIndex();
+            console.log('[SvgChangePlugin] generateIconsIndex finished successfully.');
+          } catch (err) {
+            console.error('[SvgChangePlugin] Error in generateIconsIndex:', err);
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
+            return callback(err); // Interrupt build if there's an error
+          }
+        }
+
+        callback(); // Continue build
+      }
+    );
+  }
+}
 
 function getEnvVariable(key: string): string {
   const value = process.env[key]
@@ -40,22 +94,41 @@ const nextConfig: NextConfig =
 //   enabled: process.env.ANALYZE === 'true', // Включить, если ANALYZE=true
 // })
 ({
+  webpack: (config, { dev, nextRuntime }) => {
+
+    config.module.rules.push({
+      test: /\.svg$/,
+      type: 'asset/resource',
+      generator: {
+        // filename: 'icons/[hash][ext][query]',
+        filename: 'static/media/icons/[hash][ext][query]',
+      },
+    });
+    // https://github.com/vercel/next.js/issues/36237#issuecomment-1117694528
+    if (nextRuntime !== "nodejs") return config;
+    // if(dev) {
+    //   config.plugins = config.plugins || [];
+    //
+    //   config.plugins.push(new WatchIconsPlugin(path.resolve('./src/icons/svg')));
+    //
+    //   // config.plugins.push(new IconsInvalidPlugin());
+    //   config.plugins.push(new SvgChangePlugin());
+    // }
+    return config;
+  },
   reactStrictMode: false,
-  // sassOptions: {
-  //   implementation: 'sass-embedded',
-  // },
   async headers() {
     return [
       {
-        source: '/svg/:path*',
+        source: '/_next/static/media/icons/:path*',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=3156000, immutable'
-          }
-        ]
-      }
-    ]
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ];
   },
   async redirects() {
     return [

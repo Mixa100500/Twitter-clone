@@ -59,9 +59,14 @@ export type InnerReferencedTweet = TweetWithAuthor & {
   medias?: Media[];
 }
 
+// export type Tweet = TweetWithAuthor & {
+//   referenced_tweet?: ReferencedTweet;
+//   medias?: Media[];
+//   pageId: string,
+// }
 export type Tweet = TweetWithAuthor & {
   referenced_tweet?: ReferencedTweet;
-  medias?: Media[];
+  medias?: MediaWithHls[];
   pageId: string,
 }
 
@@ -115,7 +120,13 @@ export type Media = {
   type: 'photo' | 'video',
   url?: string,
   variants?: Variants
+  width?: number,
+  height?: number,
   preview_image_url?: string,
+}
+
+export type MediaWithHls = Media & {
+  hlsUrl?: string,
 }
 
 export type Meta = {
@@ -136,6 +147,7 @@ export type TweetLineUnresolved = {
   meta: Meta
 };
 
+
 export type TweetLineNormalized = {
   tweets: Tweet[];
   // mediaByKey: MediaByKey;
@@ -145,6 +157,8 @@ export type TweetLineNormalized = {
 
 export type Medias = Media[]
 
+export type MediasWithHls = MediaWithHls[]
+
 export type MediaByKey = Record<string, Media>
 
 export type TweetProps = {
@@ -153,4 +167,23 @@ export type TweetProps = {
   // mediaByKey: MediaByKey;
   refCallback: (node: (Element | null | undefined)) => void,
   // top?: fortmats | null,
+}
+
+export type TweetById = Record<string, Tweet>
+
+export type TweetPage = {
+  nextToken?: string,
+  prevToken?: string,
+  tweets: string[],
+}
+
+export type InitialTweet = {
+  tweets: {
+    byId: TweetById,
+    allIds: string[],
+  }
+  pages: {
+    byId: Record<string, TweetPage>,
+    allIds: string[],
+  },
 }

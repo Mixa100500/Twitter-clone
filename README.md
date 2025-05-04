@@ -11,7 +11,7 @@ implement SSR-compatible and type-safe icon system
 https://developer.twitter.com/en/portal/dashboard
 
 TWITTER_CLIENT_ID=<your-twitter-client-id> <br />
-TWITTER_CLIENT_SECRET=<your-twitter-client-secret> <br />
+TWITTER_CLIENT_SECRET=<[Player.tsx](src%2Ffeature%2Fplayer%2FPlayer.tsx)your-twitter-client-secret> <br />
 NEXT_PUBLIC_ORIGIN=origin
 
 /src/utils/crypto.ts

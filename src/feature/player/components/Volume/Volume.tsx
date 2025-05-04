@@ -1,6 +1,5 @@
 import {usePlayerStoreContext} from "@/feature/player/PlayerProvider.tsx";
 import {MouseEvent, useMemo, useRef, useState} from "react";
-import {throttle} from "@/utils/throttle.ts";
 import classNames from "classnames";
 import style from "@/feature/player/components/ControlBar/ControlBar.module.css";
 import {Icon} from "@/components/Icon/Icon.tsx";
@@ -29,14 +28,11 @@ export function Volume ({ withVideo }: VolumeProps) {
 
   function mouseLeave(e: MouseEvent) {
     e.preventDefault();
+    console.log('mouseLeave')
     refHover.current = false;
     refVolumeChange.current = false;
     setHover(false)
   }
-
-  const throttleMouseMove = useMemo(() => {
-    return throttle(mousemove, 30)
-  }, []);
 
   function onRangeClick(e: MouseEvent) {
     e.preventDefault();
@@ -77,16 +73,17 @@ export function Volume ({ withVideo }: VolumeProps) {
   function mouseEnter(e: MouseEvent) {
     e.preventDefault();
     refHover.current = true;
+    console.log('mouseEnter')
     setHover(true)
   }
 
-  const dropUpBodyClassName = classNames(style.volumeDropUpBody, hover && style.volumeDropUpUpBodyShow)
+  const dropUpBodyClassName = classNames(style.volumeDropUpBody, hover && style.volumeDropUpUpBodyShow);
   return (
-    <div className={style.volumeContainer} onMouseLeave={mouseLeave}>
-      <button className={style.volumeButton} onClick={() => switchMute()} onMouseEnter={mouseEnter}>
-        <Icon class={style.svg} url={isMute ? volumeOff : volumeOn} />
+    <div className={style.volumeContainer} onPointerLeave={mouseLeave}>
+      <button className={style.volumeButton} onClick={() => switchMute()} onPointerEnter={mouseEnter}>
+        <Icon class={style.svg} url={isMute ? volumeOn : volumeOff} />
       </button>
-      {isMute && withVideo && <div className={dropUpBodyClassName} onClick={onRangeClick} onMouseDown={mousedown} onMouseMove={throttleMouseMove} onMouseUp={mouseUp}>
+      {!isMute && withVideo && <div className={dropUpBodyClassName} onClick={onRangeClick} onPointerDown={mousedown} onPointerMove={mousemove} onPointerUp={mouseUp}>
         <div className={style.volumeBarContainer} ref={volumeControlRef}>
           <div className={style.volumeBar}></div>
           <div style={{ height: `${volume * 100}%`}} className={style.volumeCurrent}></div>

@@ -82,6 +82,7 @@ export function ControlBar ({ id, withVideo, isVisible, isPlaying, playerRef, en
   }, [withVideo]);
   
   function mouseUp(e: MouseEvent) {
+    console.log('mouseUp')
     e.preventDefault();
     setTimeLineActive(false);
     stopCheckUseEffect.current = false;
@@ -146,10 +147,10 @@ export function ControlBar ({ id, withVideo, isVisible, isPlaying, playerRef, en
   const barLeftClassname = classNames(style.barRight, !isVisible && style.hide)
   return (
     <>
-      <div className={style.mouseLeaveTarget} onMouseMove={onmousemove} onMouseUp={mouseUp} onMouseLeave={mouseLeave}>
+      <div className={style.mouseLeaveTarget} onPointerMove={onmousemove} onPointerUp={mouseUp} onPointerLeave={mouseLeave}>
         <div className={style.mouseTargetPlay} onClick={playButtonClick}></div>
         <div className={style.bar}>
-          <div className={timeLineClassName} ref={refTimeline} onMouseDown={onmousedown} onClick={timeLineClick}>
+          <div className={timeLineClassName} ref={refTimeline} onPointerDown={onmousedown} onClick={timeLineClick}>
             <div className={visibleContainer}>
               {duration !== undefined && <BufferBar buffers={buffers} duration={duration}/>}
               <CurrentBar progress={progress} ended={ended}/>

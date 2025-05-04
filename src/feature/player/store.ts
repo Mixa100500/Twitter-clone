@@ -270,9 +270,16 @@ export function createPlayerStore () {
         })
       },
       setVolume(value) {
+        const result = parseFloat(value.toFixed(2))
         set({
-          volume: parseFloat(value.toFixed(2))
+          volume: result
         })
+        if(!video) {
+          console.error('no video during setVolume')
+          return;
+        }
+
+        video.volume = result
       },
       playerPositionCheck,
       getVideo () {
@@ -604,6 +611,7 @@ export function createPlayerStore () {
       },
 
       play (url) {
+        console.log('play state')
         const state = get()
         const current = state?.currentPlayerUrl
         if(current !== url) {

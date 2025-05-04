@@ -30,6 +30,7 @@ export function Player (props: Props) {
   const getCurrentUrl = usePlayerStore(state => state.getCurrentUrl);
   const isFirstRenderWithoutPlayer = usePlayerStore(state => state.players[hlsUrl || ' '] === undefined);
   const isPlaying = usePlayerStore(state => state.players[hlsUrl || ' ']?.isPlaying);
+  console.log('isPlaying component', isPlaying)
   const isLoading = usePlayerStore(state => state.players[hlsUrl || ' ']?.isLoading);
   const ended = usePlayerStore(state => state.players[hlsUrl || ' ']?.ended);
   const needPlayButton = usePlayerStore(state => state.needPlayButton);
@@ -39,6 +40,7 @@ export function Player (props: Props) {
   const [isHover, setIsHover] = useState(true);
   const timeoutRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const refVideoContainer = useRef<HTMLDivElement>(null);
+
   const mouseMove = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -79,12 +81,13 @@ export function Player (props: Props) {
   }
 
   function onMouseEnter(e: MouseEvent) {
+    console.log('mouse enter')
     e.preventDefault();
     switchClosesPlayerPositionCheck(true);
     if(refVideoContainer.current && hlsUrl) {
 
       if(getCurrentUrl() !== hlsUrl) {
-
+        console.log('url', getCurrentUrl(), hlsUrl)
         initPlayer(hlsUrl, refVideoContainer.current);
       } else {
         if(!isPlaying || ended) {
@@ -96,33 +99,37 @@ export function Player (props: Props) {
 
   function onMouseLeave(e: MouseEvent) {
     e.preventDefault();
+
     switchClosesPlayerPositionCheck(false);
   }
 
   function playButtonClick (e: MouseEvent) {
+    console.log('start click')
     e.preventDefault();
     if(!hlsUrl) {
       return
     }
 
     if(ended) {
+      console.log('play')
       playVideo(hlsUrl)
       return;
     }
-
+    console.log('isPlaying', isPlaying)
     if(isPlaying) {
+      console.log('pause')
       pause(hlsUrl)
       return;
     }
 
+    console.log('play')
     playVideo(hlsUrl)
-
   }
 
   const imageClassName = classNames(style.preview)
 
   return (
-    <div ref={playerRef} onMouseMove={mouseMove} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} className={className} style={innerStyle} >
+    <div ref={playerRef} onPointerMove={mouseMove} onMouseEnter={onMouseEnter} onPointerLeave={onMouseLeave} className={className} style={innerStyle} >
       <img draggable="false" src={preview} className={imageClassName} loading='lazy'/>
       <div className="videoContainer" ref={refVideoContainer} data-player-id={hlsUrl}>
         {/*container.prepend(video) from player store with one instance of player for autoplaying*/}

@@ -40,6 +40,9 @@ type MultiPlayerStore = {
   switchPlay: (url: string) => void
   isFullScreen: boolean,
   switchFullScreen: (el: HTMLDivElement | null) => void,
+  getIsFullScreen: () => boolean
+  isSupported?: boolean,
+  isIOS?: boolean,
 };
 
 export type BufferRanges = Array<{
@@ -50,7 +53,7 @@ export type BufferRanges = Array<{
 function createPlayer (): HTMLVideoElement {
   console.log('create video')
   const video = document.createElement('video');
-  video.setAttribute('playinline', 'true');
+  video.setAttribute('playsinline', 'true');
   return video
 }
 
@@ -84,12 +87,11 @@ function getClosestVideoToCenter(): HTMLElement | null {
   return closestContainer
 }
 
-function getDuration (hls: Hls): number | undefined  {
-  if (!hls.media) return;
-  if (hls.media.buffered.length > 0) {
-    return  hls.media.buffered.end(hls.media.buffered.length - 1);
+function getDuration (video: HTMLVideoElement): number | undefined  {
+  if (video.buffered.length > 0) {
+    return  video.buffered.end(video.buffered.length - 1);
   }
-};
+}
 
 interface DocumentWithFullscreen extends Document {
   msExitFullscreen?: () => void;
@@ -236,6 +238,9 @@ export function createPlayerStore () {
           }
         }
       },
+      getIsFullScreen () {
+        return get().isFullScreen
+      },
       switchClosesPlayerPositionCheck (value) {
         stopClosesPlayerCheck = value;
       },
@@ -270,6 +275,7 @@ export function createPlayerStore () {
         })
       },
       setVolume(value) {
+        // Firefox need Fixed 2
         const result = parseFloat(value.toFixed(2))
         set({
           volume: result
@@ -279,7 +285,8 @@ export function createPlayerStore () {
           return;
         }
 
-        video.volume = result
+        // https://www.dr-lex.be/info-stuff/volumecontrols.html#ideal3
+        video.volume = Math.pow(result, 2);
       },
       playerPositionCheck,
       getVideo () {
@@ -288,19 +295,19 @@ export function createPlayerStore () {
       getProgress (id) {
         const player = get().players[id]
         const isLive = player?.isLive as boolean
-        const hls = hlsMap[id]
+        // const hls = hlsMap[id]
         let duration: number | undefined
 
-        if(hls) {
-          let currentTime = hls.media?.currentTime || 0;
+        if(video) {
+          let currentTime = video.currentTime
           const buffers: BufferRanges = [];
-          const buffered = hls.media?.buffered
+          const buffered = video?.buffered
           const lengthBuffer = buffered?.length
 
           if(isLive) {
-            duration = getDuration(hls)
+            duration = getDuration(video)
           } else {
-            duration = hls.media?.duration
+            duration = video?.duration
           }
 
           if(lengthBuffer) {
@@ -324,7 +331,7 @@ export function createPlayerStore () {
           }
 
 
-          currentTime = Math.round(hls.media?.currentTime || 0)
+          currentTime = Math.round(video.currentTime)
           return { progress, buffers, duration, currentTime }
         }
         return { progress: 0, buffers: [], duration, currentTime: 0 }
@@ -380,7 +387,6 @@ export function createPlayerStore () {
         set({
           currentPlayerUrl: url
         })
-
         // canvas placeholder
 
         if(video) {
@@ -392,8 +398,8 @@ export function createPlayerStore () {
           }
         } else {
           video = createPlayer();
-
-          video.addEventListener("canplay", () => {
+          video.addEventListener('loadedmetadata', () => {
+            console.log('loadedmetadata 11');
             if(!video) {
               return
             }
@@ -407,7 +413,9 @@ export function createPlayerStore () {
                 console.error('no such player in state');
                 return state;
               }
+
               if(playerState.ended) {
+                console.log('play state with check end')
                 state.play(url);
               }
 
@@ -416,13 +424,70 @@ export function createPlayerStore () {
                   ...state.players,
                   [url]: {
                     ...playerState,
-                    // isPlaying: true,
                     isLoading: false,
                   }
                 }
               })
             }
-          });
+          })
+
+          // video.addEventListener("canplay", () => {
+          //   console.log('hello')
+          //   if(!video) {
+          //     return
+          //   }
+          //   // debugger;
+          //
+          //   const url = video.parentElement?.getAttribute('data-player-id')
+          //   if(url) {
+          //     console.log('canplay', url)
+          //     const state = get();
+          //     const playerState = state.players[url];
+          //     if(!playerState) {
+          //       console.error('no such player in state');
+          //       return state;
+          //     }
+          //
+          //     // if(playerState.ended) {
+          //       state.play(url);
+          //     // }
+          //
+          //     set({
+          //       players: {
+          //         ...state.players,
+          //         [url]: {
+          //           ...playerState,
+          //           isLoading: false,
+          //         }
+          //       }
+          //     })
+          //   }
+          // });
+
+          video.addEventListener('seeking', () => {
+            if (!video) {
+              return
+            }
+            const url = video.parentElement?.getAttribute('data-player-id')
+            if(url) {
+              set(state => {
+
+                const playerState = state.players[url];
+                if(playerState && playerState.ended) {
+                  return {
+                    players: {
+                      ...state.players,
+                      [url]: {
+                        ...playerState,
+                        ended: false,
+                      }
+                    }
+                  }
+                }
+                return state;
+              })
+            }
+          })
 
           video.addEventListener("playing", () => {
             if (!video) {
@@ -431,25 +496,23 @@ export function createPlayerStore () {
             const url = video.parentElement?.getAttribute('data-player-id')
             if(url) {
               set(state => {
+
                 const playerState = state.players[url];
-                if(!playerState) {
-                  console.error('no such player in state');
-                  return state;
-                }
-
-                if(!playerState.ended) {
-
-                }
-
-                return {
-                  players: {
-                    ...state.players,
-                    [url]: {
-                      ...playerState,
-                      ended: false,
+                if(playerState) {
+                  return {
+                    players: {
+                      ...state.players,
+                      [url]: {
+                        ...playerState,
+                        ended: false,
+                        // isPlaying: true,
+                        isLoading: false
+                      }
                     }
                   }
                 }
+                console.error('no such player during playing');
+                return state;
               })
             }
           })
@@ -501,6 +564,7 @@ export function createPlayerStore () {
                     ...state.players,
                     [url]: {
                       ...playerState,
+                      isPlaying: false,
                       ended: true,
                     }
                   }
@@ -514,84 +578,142 @@ export function createPlayerStore () {
         }
 
         container.prepend(video);
-
+        console.log('before add eventlisten');
         // const hlsState = state.players[url];
         const hlsInstance = hlsMap[url];
         if(hlsInstance) {
+
           hls = hlsInstance;
           hls.attachMedia(video);
-          hls.once(Hls.Events.MEDIA_ATTACHED, () => {
 
-            if (!video) {
-              return
+          // hls.once(Hls.Events.MEDIA_ATTACHED, () => {
+          //   if (!video) {
+          //     return
+          //   }
+
+        } else {
+          function checkAndSetSupport() {
+            const isSupported = get().isSupported
+
+            if(isSupported === undefined) {
+              const checkResult = Hls.isSupported()
+              set({
+                isSupported: checkResult,
+              })
+              return checkResult;
             }
 
-            video.addEventListener('canplay', function handleCanPlay() {
-              if (!video) {
-                return
+            return isSupported
+          }
 
-              }
-              video.removeEventListener('canplay', handleCanPlay);
-              get().play(url);
-            });
-          });
-        } else {
-          hls = new Hls();
-          hls.loadSource(url);
-          hls.attachMedia(video);
-          hlsMap[url] = hls;
+          if(checkAndSetSupport()) {
 
-          set((state) => {
-            return {
-              players: {
-                ...state.players,
-                [url]: {
-                  isPlaying: false,
-                  isLoading: true,
-                  currentQuality: null,
-                  error: null,
-                  lastTime: 0,
-                  ended: false,
-                  // paused: true,
-                },
-              },
-            };
-          });
+            hls = new Hls();
+            hls.loadSource(url);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.ERROR, (event, data) => {
+              console.error('HLS Error:', data);
 
-          hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-            const quality: number[] = [];
-            let isLive: boolean = false;
-
-            data.levels.forEach(level => {
-              quality.push(level.height)
-              const live = level.details?.live
-              if(isLive === false && live === true) {
-                isLive = true;
+              if (data.fatal) {
+                switch(data.type) {
+                  case Hls.ErrorTypes.NETWORK_ERROR:
+                    console.error('Network Error:', data.details);
+                    break;
+                  case Hls.ErrorTypes.MEDIA_ERROR:
+                    console.error('Media Error:', data.details);
+                    hls.recoverMediaError();
+                    break;
+                  default:
+                    console.error('critical error:', data.type, data.details);
+                    hls.destroy();
+                    break;
+                }
               }
             });
 
-            get().play(url);
+            hlsMap[url] = hls;
 
-            set(state => {
-              const currentPlayer = state.players[url];
-              if (!currentPlayer) {
-                console.error('no player after manifest parsed');
-                return state
-              };
-
+            set((state) => {
               return {
                 players: {
                   ...state.players,
                   [url]: {
-                    ...currentPlayer,
-                    qualities: quality,
-                    isLive,
-                  }
-                }
+                    isPlaying: false,
+                    isLoading: true,
+                    currentQuality: null,
+                    error: null,
+                    lastTime: 0,
+                    ended: false,
+                    // paused: true,
+                  },
+                },
               };
             });
-          });
+
+            hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+              console.log('MANIFEST_PARSED', data);
+              const quality: number[] = [];
+              let isLive: boolean = false;
+
+              data.levels.forEach(level => {
+                quality.push(level.height)
+                const live = level.details?.live
+                if(isLive === false && live === true) {
+                  isLive = true;
+                }
+              });
+
+              // get().play(url);
+
+              set(state => {
+                const currentPlayer = state.players[url];
+                if (!currentPlayer) {
+                  console.error('no player after manifest parsed');
+                  return state
+                };
+
+                return {
+                  players: {
+                    ...state.players,
+                    [url]: {
+                      ...currentPlayer,
+                      qualities: quality,
+                      isLive,
+                    }
+                  }
+                };
+              });
+            });
+          } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = url;
+            console.log('set player state to loading');
+            set((state) => {
+              return {
+                players: {
+                  ...state.players,
+                  [url]: {
+                    isPlaying: false,
+                    isLoading: true,
+                    currentQuality: null,
+                    error: null,
+                    lastTime: 0,
+                    ended: false,
+                    // paused: true,
+                  },
+                },
+              };
+            });
+          }
         }
+
+        video.addEventListener('loadedmetadata', function handleCanPlay() {
+          if (!video) {
+            return
+          }
+
+          video.removeEventListener('loadedmetadata', handleCanPlay);
+          get().play(url);
+        });
       },
 
       destroyPlayer: (url) => {
@@ -611,10 +733,10 @@ export function createPlayerStore () {
       },
 
       play (url) {
-        console.log('play state')
+        console.log('play start state')
         const state = get()
         const current = state?.currentPlayerUrl
-        if(current !== url) {
+        if(current === undefined) {
           return state
         }
 
@@ -646,17 +768,18 @@ export function createPlayerStore () {
             }
           })
         }
-
+        console.log('play start state before play')
         const promise = video?.play()
         if (promise !== undefined) {
           promise.then(() => {
+            console.log('play start state resolve')
             set((state) => {
               const currentPlayer = state.players[url];
               if(!currentPlayer) {
                 console.error('no player during play')
                 return state;
               }
-
+              console.log('isplaying 11',)
               return {
                 hasUserInteraction: true,
                 needPlayButton: false,
@@ -672,44 +795,41 @@ export function createPlayerStore () {
               }
             })
           }).catch((error => {
-            if (error.name === "NotAllowedError") {
-              console.log("maybe need mute...");
-              newVideoLink.muted = true;
-              set({
-                isMute: true
-              })
+            console.log('error', error)
+            console.log("maybe need mute...");
+            newVideoLink.muted = true;
+            set({
+              isMute: true
+            })
 
-              newVideoLink.play().
-                then(() => {
-                  set((state) => {
-                    const currentPlayer = state.players[url];
-                    if(!currentPlayer) {
-                      console.error('no player during play with mute')
-                      return state;
-                    }
-
-                    return {
-                      hasUserInteraction: true,
-                      players: {
-                        ...state.players,
-                        [url]: {
-                          ...currentPlayer,
-                          isPlaying: true,
-                          isLoading: false,
-                          // paused: false,
-                        }
+            newVideoLink.play().
+              then(() => {
+                set((state) => {
+                  const currentPlayer = state.players[url];
+                  if(!currentPlayer) {
+                    console.error('no player during play with mute')
+                    return state;
+                  }
+                  return {
+                    hasUserInteraction: true,
+                    players: {
+                      ...state.players,
+                      [url]: {
+                        ...currentPlayer,
+                        isPlaying: true,
+                        isLoading: false,
+                        // paused: false,
                       }
                     }
-                  })
-                })
-                .catch((error) => {
-                  if (error.name === "NotAllowedError") {
-                    set({
-                      needPlayButton: true
-                    })
                   }
                 })
-            }
+              })
+              .catch((error) => {
+                console.log('again error');
+                set({
+                  needPlayButton: true
+                })
+              })
           }))
         }
       },

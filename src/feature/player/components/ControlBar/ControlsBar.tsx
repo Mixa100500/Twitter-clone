@@ -9,6 +9,7 @@ import {FullScreen} from "@/feature/player/components/FullScreen/FullScreen.tsx"
 import {Play} from "@/feature/player/components/Play/Play.tsx";
 import {BufferBar} from "@/feature/player/components/BufferBar/BufferBar.tsx";
 import {CurrentBar} from "@/feature/player/components/CurrentBar/CurrentBar.tsx";
+import {log} from "next/dist/server/typescript/utils";
 
 type PropsControlBar = {
   id: string
@@ -16,8 +17,10 @@ type PropsControlBar = {
   isVisible: boolean
   isPlaying: boolean
   playerRef: HTMLDivElement | null
+  refVolumeChanging:  { current: boolean },
   ended: boolean | undefined
   playButtonClick: (e: MouseEvent) => void
+  playButtonClickWithoutFullscreen: (e: MouseEvent) => void
 }
 
 function haveBufferRangesChanged(
@@ -39,7 +42,7 @@ function haveBufferRangesChanged(
   return false;
 }
 
-export function ControlBar ({ id, withVideo, isVisible, isPlaying, playerRef, ended, playButtonClick }: PropsControlBar) {
+export function ControlBar ({refVolumeChanging, id, withVideo, isVisible, isPlaying, playerRef, ended, playButtonClick, playButtonClickWithoutFullscreen }: PropsControlBar) {
   const usePlayer = usePlayerStoreContext();
   const getProgress = usePlayer(state => state.getProgress);
   const getVideo = usePlayer(state => state.getVideo);
@@ -82,13 +85,31 @@ export function ControlBar ({ id, withVideo, isVisible, isPlaying, playerRef, en
   }, [withVideo]);
   
   function mouseUp(e: MouseEvent) {
-    console.log('mouseUp')
-    e.preventDefault();
-    setTimeLineActive(false);
+    if(refVolumeChanging.current) {
+      return
+    }
+
     stopCheckUseEffect.current = false;
   }
 
+  function pointerUp(e: React.PointerEvent) {
+    console.log('up', refVolumeChanging.current)
+    if(refVolumeChanging.current) {
+      return
+    }
+
+    // if(e.pointerType === 'mouse' || e.pointerType === 'touch') {
+    setTimeLineActive(false);
+    stopCheckUseEffect.current = false;
+    // }
+  }
+
   function timeLineClick(e: MouseEvent) {
+    if(refVolumeChanging.current) {
+      return
+    }
+
+    e.preventDefault();
     if(!withVideo) {
       return;
     }
@@ -109,14 +130,11 @@ export function ControlBar ({ id, withVideo, isVisible, isPlaying, playerRef, en
     }
   }
 
-  function mouseLeave(e: MouseEvent) {
-    e.preventDefault();
-    setTimeLineActive(false);
-    stopCheckUseEffect.current = false;
-  }
 
-  function onmousemove(e: MouseEvent) {
-    e.preventDefault();
+  function pointerMove (e: React.PointerEvent) {
+    if(refVolumeChanging.current) {
+      return
+    }
     if(!withVideo) {
       return;
     }
@@ -136,21 +154,27 @@ export function ControlBar ({ id, withVideo, isVisible, isPlaying, playerRef, en
       }
     }
   }
-  
-  function onmousedown(e: MouseEvent<HTMLDivElement>) {
-    e.preventDefault();
+
+  function onPointerDown(e: React.PointerEvent) {
+    if(refVolumeChanging.current) {
+      return
+    }
+
     setTimeLineActive(true);
     stopCheckUseEffect.current = true;
   }
 
   const timeLineClassName = classNames(style.timeLine, timeLineActive && style.timeLineActive)
   const barLeftClassname = classNames(style.barRight, !isVisible && style.hide)
+
+  const refTarget = useRef<HTMLDivElement | null>(null)
+
   return (
     <>
-      <div className={style.mouseLeaveTarget} onPointerMove={onmousemove} onPointerUp={mouseUp} onPointerLeave={mouseLeave}>
-        <div className={style.mouseTargetPlay} onClick={playButtonClick}></div>
-        <div className={style.bar}>
-          <div className={timeLineClassName} ref={refTimeline} onPointerDown={onmousedown} onClick={timeLineClick}>
+      <div className={style.mouseLeaveTarget} ref={refTarget} onPointerMove={pointerMove} onPointerLeave={pointerUp} onMouseUp={mouseUp} onPointerUp={pointerUp} onPointerCancel={pointerUp} onPointerDown={onPointerDown}>
+        <div className={style.mouseTargetPlay} onClick={playButtonClickWithoutFullscreen}></div>
+        <div className={style.bar} >
+          <div className={timeLineClassName} ref={refTimeline} onClick={timeLineClick}>
             <div className={visibleContainer}>
               {duration !== undefined && <BufferBar buffers={buffers} duration={duration}/>}
               <CurrentBar progress={progress} ended={ended}/>
@@ -163,7 +187,7 @@ export function ControlBar ({ id, withVideo, isVisible, isPlaying, playerRef, en
               {duration && <div className={style.time}>
                 {formatTimer(Math.round(currentTime))} / {formatTimer(duration)}
               </div>}
-              <Volume withVideo={withVideo}/>
+              <Volume refVolumeChanging={refVolumeChanging} withVideo={withVideo}/>
               <FullScreen playerRef={playerRef} />
             </div>
           </div>

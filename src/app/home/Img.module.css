@@ -1,0 +1,16 @@
+.wrapper {
+  flex-basis: 16.666%;
+  height: var(--height-300);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.svg {
+  width: 26px;
+  height: 26px;
+}
+
+.path {
+  fill: currentColor;
+}

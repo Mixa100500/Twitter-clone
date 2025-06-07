@@ -22,7 +22,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} ${bodyS.body}`}>{children}</body>
+      <head>
+        <ErudaDebug />
+      </head>
+      <body className={`${inter.className} ${bodyS.body}`}>
+        {children}
+      </body>
     </html>
   );
+}
+
+function ErudaDebug () {
+  if(process.env.NODE_ENV === 'development') {
+    return <>
+      {/*<script src="//cdn.jsdelivr.net/npm/eruda"></script>*/}
+      { //tslint:disable-next-line
+      }
+      {/*<script>eruda.init();</script>*/}
+    </>
+  }
 }

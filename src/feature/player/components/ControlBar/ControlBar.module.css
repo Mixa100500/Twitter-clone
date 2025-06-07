@@ -9,6 +9,8 @@
 }
 
 .mouseLeaveTarget {
+  touch-action: none;
+  /*-webkit-tap-highlight-color: transparent;*/
   position: absolute;
   top: 0;
   left: 0;

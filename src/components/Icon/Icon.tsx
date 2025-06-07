@@ -1,6 +1,9 @@
+'use client'
+
 import IconS from './Icon.module.css'
 import classNames from "classnames";
 import {CSSProperties} from "react";
+
 
 // Unique type for url prop which should get value only from
 // svg import, about svg import type is written in global.d.ts

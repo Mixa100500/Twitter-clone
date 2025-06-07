@@ -4,56 +4,56 @@ import { Compiler } from 'webpack';
 import path from 'path';
 import generateIconsIndex from './src/scripts/svgProcessor'
 
-class WatchIconsPlugin {
-  private iconsDir: string;
+// class WatchIconsPlugin {
+//   private iconsDir: string;
+//
+//   constructor(iconsDir: string) {
+//     this.iconsDir = iconsDir;
+//   }
+//
+//   apply(compiler: Compiler) {
+//     compiler.hooks.afterCompile.tap('WatchIconsPlugin', (compilation) => {
+//       compilation.contextDependencies.add(this.iconsDir);
+//     });
+//   }
+// }
+//
+// interface CompilerWithModifiedFiles extends Compiler {
+//   modifiedFiles?: Set<string>;
+// }
 
-  constructor(iconsDir: string) {
-    this.iconsDir = iconsDir;
-  }
+// class SvgChangePlugin {
+//   apply(compiler: Compiler): void {
+//     // Cast the compiler to include modifiedFiles
+//     const compilerWithModifiedFiles = compiler as CompilerWithModifiedFiles;
 
-  apply(compiler: Compiler) {
-    compiler.hooks.afterCompile.tap('WatchIconsPlugin', (compilation) => {
-      compilation.contextDependencies.add(this.iconsDir);
-    });
-  }
-}
+//     compiler.hooks.watchRun.tapAsync(
+//       'SvgChangePlugin',
+//       async (compilation, callback) => {
+//         const modifiedFiles = compilerWithModifiedFiles.modifiedFiles;
+//         // Check if any of the modified files end with `.svg`
+//         const hasSvgChanges = modifiedFiles
+//           ? Array.from(modifiedFiles).some((file) => file.endsWith('svg'))
+//           : false;
 
-interface CompilerWithModifiedFiles extends Compiler {
-  modifiedFiles?: Set<string>;
-}
+//         if (hasSvgChanges) {
+//           console.log('[SvgChangePlugin] Detected changes in .svg files. Running generateIconsIndex...');
+//           try {
+//             await generateIconsIndex();
+//             console.log('[SvgChangePlugin] generateIconsIndex finished successfully.');
+//           } catch (err) {
+//             console.error('[SvgChangePlugin] Error in generateIconsIndex:', err);
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-expect-error
+//             return callback(err); // Interrupt build if there's an error
+//           }
+//         }
 
-class SvgChangePlugin {
-  apply(compiler: Compiler): void {
-    // Cast the compiler to include modifiedFiles
-    const compilerWithModifiedFiles = compiler as CompilerWithModifiedFiles;
-
-    compiler.hooks.watchRun.tapAsync(
-      'SvgChangePlugin',
-      async (compilation, callback) => {
-        const modifiedFiles = compilerWithModifiedFiles.modifiedFiles;
-        // Check if any of the modified files end with `.svg`
-        const hasSvgChanges = modifiedFiles
-          ? Array.from(modifiedFiles).some((file) => file.endsWith('svg'))
-          : false;
-
-        if (hasSvgChanges) {
-          console.log('[SvgChangePlugin] Detected changes in .svg files. Running generateIconsIndex...');
-          try {
-            await generateIconsIndex();
-            console.log('[SvgChangePlugin] generateIconsIndex finished successfully.');
-          } catch (err) {
-            console.error('[SvgChangePlugin] Error in generateIconsIndex:', err);
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-expect-error
-            return callback(err); // Interrupt build if there's an error
-          }
-        }
-
-        callback(); // Continue build
-      }
-    );
-  }
-}
+//         callback(); // Continue build
+//       }
+//     );
+//   }
+// }
 
 function getEnvVariable(key: string): string {
   const value = process.env[key]

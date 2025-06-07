@@ -1,6 +1,6 @@
 'use client'
 
-import {useRef} from "react";
+import {useEffect, useRef} from "react";
 import style from './tweets.module.css'
 import {Loading} from "@/components/Loading/Loading.tsx";
 import {defaultRangeExtractor, useWindowVirtualizer, Range} from "@tanstack/react-virtual";

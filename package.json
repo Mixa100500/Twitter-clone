@@ -27,27 +27,15 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
-    "@faker-js/faker": "^9.4.0",
-    "@swc/core": "^1.11.8",
-    "@types/fs-extra": "^11.0.4",
     "@types/node": "^20",
     "@types/react": "npm:types-react@19.0.0-rc.1",
     "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
-    "@types/webpack": "^5.28.5",
     "@typescript-eslint/eslint-plugin": "^8.14.0",
     "@typescript-eslint/parser": "^8.14.0",
-    "chokidar": "^4.0.3",
-    "css-loader": "^7.1.2",
     "esbuild": "^0.25.0",
     "eslint": "^8",
     "eslint-config-next": "15.0.4-canary.20",
-    "fs-extra": "^11.3.0",
-    "nodemon": "^3.1.9",
-    "ts-node": "^10.9.2",
-    "typescript": "^5",
-    "uglify-js": "^3.19.3",
-    "webpack-manifest-plugin": "^5.0.0",
-    "webpack-nano": "^1.1.1"
+    "typescript": "^5"
   },
   "overrides": {
     "@types/react": "npm:types-react@19.0.0-rc.1",

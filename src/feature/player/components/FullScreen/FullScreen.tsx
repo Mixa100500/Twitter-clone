@@ -13,10 +13,15 @@ export function FullScreen ({ playerRef }: FullScreenProps) {
   const isFullScreen = usePlayer(state => state.isFullScreen);
   const switchFullScreen = usePlayer(state => state.switchFullScreen);
   function toggle () {
+    console.log('fullscreen')
     switchFullScreen(playerRef);
   }
 
-  return <button className={style.fullScreenButton} onClick={toggle}>
+  function onPoinerDown () {
+    console.log('poinerdown on Fullscreen')
+  }
+
+  return <button className={style.fullScreenButton} onPointerUp={onPoinerDown} onClick={toggle}>
     <Icon class={style.svg} url={isFullScreen ? fullScreenClose : fullScreenOpen } />
     <Icon class={style.preloadSvg} url={fullScreenClose}/>
     <div className={style.fullscreenHover}></div>

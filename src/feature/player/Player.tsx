@@ -233,7 +233,9 @@ export function Player (props: Props) {
   return (
     <div onDragStart={dragStart} onPointerDown={pointerDown} onPointerUp={pointerUp} onClick={click} onPointerMove={pointerMove} onPointerLeave={onMouseLeave} className={className} style={innerStyle} >
       <div ref={playerRef} className={style.playerContainerBody}>
-        <img src={preview} className={imageClassName} loading='lazy'/>
+        <div className={style.playerPreviewContainer}>
+          <img src={preview} className={imageClassName} loading='lazy'/>
+        </div>
         <div className="videoContainer" ref={refVideoContainer} data-player-id={hlsUrl}>
           {/*container.prepend(video) from player store with one instance of player for autoplaying*/}
         </div>

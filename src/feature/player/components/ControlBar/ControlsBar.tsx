@@ -53,8 +53,11 @@ export function ControlBar ({refVolumeChanging, id, withVideo, isVisible, isPlay
   const [timeLineActive, setTimeLineActive] = useState<boolean>(false);
   const refTimeline = useRef<HTMLDivElement>(null);
   const stopCheckUseEffect = useRef(false);
+  const refSwipeTimeOut = useRef<number>(0);
   const visible = isVisible ? '' : style.hide;
   const visibleContainer = classNames(isVisible ? '' : style.hide, style.hideContainer);
+  const refInitialSwipeX = useRef(0);
+  const refInitialProgress = useRef(0);
 
   useEffect(() => {
     let timerId: ReturnType<typeof setInterval> | undefined
@@ -93,7 +96,6 @@ export function ControlBar ({refVolumeChanging, id, withVideo, isVisible, isPlay
   }
 
   function pointerUp(e: React.PointerEvent) {
-    console.log('up', refVolumeChanging.current)
     if(refVolumeChanging.current) {
       return
     }
@@ -139,26 +141,61 @@ export function ControlBar ({refVolumeChanging, id, withVideo, isVisible, isPlay
       return;
     }
 
-    if(refTimeline.current && stopCheckUseEffect.current) {
-      const rect = refTimeline.current.getBoundingClientRect();
-      let pos = (e.clientX - rect.left) / rect.width;
-      pos = Math.max(0, Math.min(1, pos));
-      const video = getVideo();
-
-      if(duration && video) {
-        const currentTime = duration * pos
-        const newPosition = currentTime / duration * 100
-        video.currentTime = currentTime;
-        setCurrentTime(currentTime)
-        setProgress(newPosition)
+    if(e.pointerType === 'touch' || e.pointerType === 'pen') {
+      if(refSwipeTimeOut.current + 200 > Date.now() ) {
+        return;
       }
     }
+    if (refTimeline.current && stopCheckUseEffect.current) {
+      const rect = refTimeline.current.getBoundingClientRect();
+      const deltaX = e.clientX - refInitialSwipeX.current;
+      const deltaProgress = deltaX / rect.width;
+      let newProgress = refInitialProgress.current + deltaProgress;
+
+      newProgress = Math.max(0, Math.min(1, newProgress));
+
+      const video = getVideo();
+      if (duration && video) {
+        video.currentTime = duration * newProgress;
+        setCurrentTime(duration * newProgress);
+        setProgress(newProgress * 100);
+      }
+    }
+    // if(refTimeline.current && stopCheckUseEffect.current) {
+    //   const rect = refTimeline.current.getBoundingClientRect();
+    //   const initialX = refInitialSwipeX.current;
+    //   const currentX = e.clientX;
+    //   const deltaX = currentX - initialX;
+    //
+    //   let pos = (refInitialProgressPos.current + deltaX / rect.width);
+    //
+    //   // let pos = (e.clientX - rect.left) / rect.width;
+    //   // pos = Math.max(0, Math.min(1, pos));
+    //   const video = getVideo();
+    //   pos = Math.max(0, Math.min(1, pos));
+    //
+    //   if(duration && video) {
+    //     const currentTime = duration * pos
+    //     const newPosition = currentTime / duration * 100
+    //     video.currentTime = currentTime;
+    //     setCurrentTime(currentTime)
+    //     setProgress(newPosition)
+    //   }
+    // }
   }
 
   function onPointerDown(e: React.PointerEvent) {
     if(refVolumeChanging.current) {
       return
     }
+
+    if (refTimeline.current) {
+      const rect = refTimeline.current.getBoundingClientRect();
+      refInitialSwipeX.current = e.clientX;
+      refInitialProgress.current = progress / 100;
+    }
+
+    refSwipeTimeOut.current = Date.now()
 
     setTimeLineActive(true);
     stopCheckUseEffect.current = true;

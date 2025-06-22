@@ -45,6 +45,7 @@ export function Player (props: Props) {
   const switchFullScreen = usePlayerStore(state => state.switchFullScreen);
   const refVolumeChanging = useRef(false);
   const refVolumeChanged = useRef(false);
+  const refIsClick = useRef(false);
 
   const pointerMove = () => {
     hover()
@@ -103,12 +104,21 @@ export function Player (props: Props) {
       playVideo(hlsUrl)
       return;
     }
+
+    if(checkIsSwipe()) {
+      return;
+    }
+
     if(isPlaying) {
       pause(hlsUrl)
       return;
     }
 
     playVideo(hlsUrl)
+  }
+
+  function checkIsSwipe () {
+    return refTouchTime.current + 200 < Date.now()
   }
 
   function switchPlayOnClick (e: MouseEvent) {
@@ -122,10 +132,15 @@ export function Player (props: Props) {
       return
     }
 
+    if(checkIsSwipe()) {
+      return;
+    }
+
     if(ended) {
       playVideo(hlsUrl)
       return;
     }
+
     if(isPlaying) {
       pause(hlsUrl)
       return;
@@ -179,12 +194,15 @@ export function Player (props: Props) {
     } else {
       switchClosesPlayerPositionCheck(true);
       if(refVideoContainer.current && hlsUrl) {
-
         if(getCurrentUrl() !== hlsUrl) {
+          console.log('may play')
           initPlayer(hlsUrl, refVideoContainer.current);
         } else {
           if(!isPlaying || ended) {
-            playVideo(hlsUrl);
+            if(!checkIsSwipe()) {
+              console.log('may play')
+              playVideo(hlsUrl);
+            }
           }
         }
       }
@@ -193,8 +211,12 @@ export function Player (props: Props) {
 
   const isTouchRef = useRef<boolean>(false);
   const isMoveTouch = useRef(false);
+  const refTouchTime = useRef(0);
 
   function pointerDown() {
+    refTouchTime.current = Date.now();
+    refIsClick.current = false;
+
     refVolumeChanged.current = false
     if(refVolumeChanging.current) {
       return

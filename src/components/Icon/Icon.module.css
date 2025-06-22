@@ -1,5 +1,4 @@
 .icon {
-  background-image: var(--icon-url);
   mask-image: var(--icon-url);
   -webkit-mask-image: var(--icon-url);
   background: currentColor;

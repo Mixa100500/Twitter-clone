@@ -65,7 +65,7 @@
 
 @media (min-width: 400px) {
   .menu {
-    width: var(--navbar-width-desctop);
+    min-width: var(--navbar-width-desctop);
   }
 
   .asideLeft {

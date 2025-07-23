@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import {CSSProperties, useEffect, useRef, useState} from "react";
+import {CSSProperties, memo, useEffect, useRef, useState} from "react";
 import {usePlayerStoreContext} from "@/feature/player/PlayerProvider.tsx";
 import style from './Player.module.css'
 import {ControlBar} from "@/feature/player/components/ControlBar/ControlsBar.tsx";
@@ -17,8 +17,30 @@ type Props = {
   height?: number
 }
 
-
 const HOVER_DURATION = 2000
+
+export function LazyInitPlayer (props: Props) {
+  const { width, height } = props
+  const usePlayerStore = usePlayerStoreContext();
+  const isFirstRender = usePlayerStore(state => state.renderCount === 1);
+
+  let innerStyle: CSSProperties = {};
+
+  if(width && height) {
+    const paddingTop = height / width * 100 + '%';
+    innerStyle = {
+      paddingTop,
+    }
+  }
+
+  if(isFirstRender) {
+    return <div style={innerStyle}></div>
+  }
+
+  return <PlayerWithMemo playerContainerStyle={props.playerContainerStyle} width={props.width} height={props.height} hlsUrl={props.hlsUrl} preview={props.preview} />
+}
+
+const PlayerWithMemo = memo(Player)
 
 export function Player (props: Props) {
   const { hlsUrl, preview, width, height, playerContainerStyle } = props;
@@ -43,6 +65,7 @@ export function Player (props: Props) {
   const timeoutRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const refVideoContainer = useRef<HTMLDivElement>(null);
   const switchFullScreen = usePlayerStore(state => state.switchFullScreen);
+  const isFirstRender = usePlayerStore(state => state.renderCount === 1);
   const refVolumeChanging = useRef(false);
   const refVolumeChanged = useRef(false);
   const refIsClick = useRef(false);
@@ -52,19 +75,21 @@ export function Player (props: Props) {
   };
 
   useEffect(() => {
-    timeoutRef.current = setTimeout(() => {
-      setIsHover(false);
-      timeoutRef.current = null;
-    }, HOVER_DURATION);
+    if(!isFirstRender) {
+      timeoutRef.current = setTimeout(() => {
+        setIsHover(false);
+        timeoutRef.current = null;
+      }, HOVER_DURATION);
 
-    if(hlsUrl) {
-      subscribe(hlsUrl);
+      if(hlsUrl) {
+        subscribe(hlsUrl);
 
-      return () => {
-        unsubscribe(hlsUrl);
+        return () => {
+          unsubscribe(hlsUrl);
+        }
       }
     }
-  }, []);
+  }, [isFirstRender]);
 
 
   const className = classNames(playerContainerStyle, style.playerContainer)
@@ -109,7 +134,7 @@ export function Player (props: Props) {
       return;
     }
 
-    if(isPlaying) {
+    if(!isTouchRef.current && isPlaying) {
       pause(hlsUrl)
       return;
     }
@@ -137,11 +162,13 @@ export function Player (props: Props) {
     }
 
     if(ended) {
+      console.log('play')
       playVideo(hlsUrl)
       return;
     }
 
     if(isPlaying) {
+      console.log('pause')
       pause(hlsUrl)
       return;
     }
@@ -190,17 +217,23 @@ export function Player (props: Props) {
     if(isTouchRef.current) {
       if(!getIsFullScreen()) {
         switchFullScreen(playerRef.current);
+        if(hlsUrl && refVideoContainer.current) {
+          if(getCurrentUrl() !== hlsUrl) {
+            console.log('play')
+            initPlayer(hlsUrl, refVideoContainer.current)
+          }
+        }
       }
     } else {
       switchClosesPlayerPositionCheck(true);
       if(refVideoContainer.current && hlsUrl) {
         if(getCurrentUrl() !== hlsUrl) {
-          console.log('may play')
           initPlayer(hlsUrl, refVideoContainer.current);
+          console.log('play')
         } else {
           if(!isPlaying || ended) {
             if(!checkIsSwipe()) {
-              console.log('may play')
+              console.log('play')
               playVideo(hlsUrl);
             }
           }

@@ -64,6 +64,10 @@
 }
 
 @media (min-width: 400px) {
+  .menu {
+    width: var(--navbar-width-desctop);
+  }
+
   .asideLeft {
     position: static;
     flex-direction: column;
@@ -183,6 +187,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: var(--black-000);
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (min-width: 400px) {

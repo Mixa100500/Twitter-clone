@@ -8,6 +8,7 @@ import like from "@icons/svg/like.svg";
 import views from "@icons/svg/views.svg";
 import bookmark from "@icons/svg/bookmark.svg";
 import share from "@icons/svg/share.svg";
+import {usePlayerStoreContext} from "@/feature/player/PlayerProvider.tsx";
 
 type FooterProps = {
   metrics: TweetMetrics
@@ -15,6 +16,12 @@ type FooterProps = {
 
 export function TweetFooter (props: FooterProps) {
   const metrics = props.metrics
+  const usePlayerStore = usePlayerStoreContext();
+  const isThirdRender = usePlayerStore(state => state.renderCount === 3);
+
+  if(!isThirdRender) {
+    return <div className={style.footer}></div>
+  }
 
   return (
     <div className={style.footer}>

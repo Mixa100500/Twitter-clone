@@ -17,6 +17,8 @@
     "@tanstack/react-virtual": "^3.11.2",
     "classnames": "^2.5.1",
     "crypto": "^1.0.1",
+    "dayjs": "^1.11.13",
+    "dayjs-plugin-utc": "^0.1.2",
     "hls.js": "^1.5.18",
     "jose": "^5.9.6",
     "next": "^15.1.0",

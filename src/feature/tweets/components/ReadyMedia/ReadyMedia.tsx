@@ -2,7 +2,7 @@ import {MediasWithHls} from "@/feature/tweets/types.ts";
 import classNames from "classnames";
 import style from "@/feature/tweets/tweets.module.css";
 import {Image} from "@/components/Images/Image.tsx";
-import {Player} from "@/feature/player/Player.tsx";
+import {LazyInitPlayer, Player} from "@/feature/player/Player.tsx";
 
 type ReadyMediaProps = {
   medias: MediasWithHls
@@ -74,7 +74,7 @@ export function ReadyMedia (props: ReadyMediaProps) {
           // const hlsUrl = variants?.find((variant => variant.content_type === 'application/x-mpegURL'))?.url
 
           return (
-            <Player playerContainerStyle={classname} width={media.width} height={media.height} hlsUrl={hlsUrl} preview={media.preview_image_url} key={media.media_key}/>
+            <LazyInitPlayer playerContainerStyle={classname} width={media.width} height={media.height} hlsUrl={hlsUrl} preview={media.preview_image_url} key={media.media_key}/>
           )
         }
       })}
@@ -89,6 +89,6 @@ export function ReadyMedia (props: ReadyMediaProps) {
   )
 
   return (
-    <Player playerContainerStyle={classname} width={media?.width} height={media?.height} hlsUrl={hlsUrl} preview={medias[0].preview_image_url} />
+    <LazyInitPlayer playerContainerStyle={classname} width={media?.width} height={media?.height} hlsUrl={hlsUrl} preview={medias[0].preview_image_url} />
   )
 }

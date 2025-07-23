@@ -32,5 +32,6 @@ export function Image (props: ImageProps) {
     sizes={sizes}
     loading={loading}
     onLoad={() => setLoaded(true)}
+    onError={() => setLoaded(true)}
   />
 }

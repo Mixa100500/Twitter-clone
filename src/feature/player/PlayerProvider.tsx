@@ -1,6 +1,6 @@
 'use client'
 
-import {createContext, ReactNode, useContext, useRef} from "react";
+import {createContext, ReactNode, useContext, useEffect, useRef, useState} from "react";
 import {createPlayerStore} from "@/feature/player/store.ts";
 
 type Props = {
@@ -14,10 +14,21 @@ export const PlayerStoreContext = createContext<PlayerStoreApi | undefined>(
 )
 
 export function PlayerProvider ({children}: Props) {
-  const storeRef = useRef<PlayerStoreApi | null>(null)
+  const storeRef = useRef<PlayerStoreApi | null>(null);
+
   if (storeRef.current === null) {
     storeRef.current = createPlayerStore()
   }
+
+  useEffect(() => {
+    setTimeout(() => {
+      // Javascript execution time division.
+      storeRef.current?.getState().setRenderCount(2)
+      setTimeout(() => {
+        storeRef.current?.getState().setRenderCount(3)
+      }, 0)
+    }, 0)
+  }, []);
 
   return (
     <PlayerStoreContext.Provider value={storeRef.current}>

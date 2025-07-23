@@ -43,6 +43,8 @@ type MultiPlayerStore = {
   getIsFullScreen: () => boolean
   isSupported?: boolean,
   isIOS?: boolean,
+  renderCount: number
+  setRenderCount: (c: number) => void
 };
 
 export type BufferRanges = Array<{
@@ -223,6 +225,12 @@ export function createPlayerStore () {
       needPlayButton: false,
       volume: 0,
       isFullScreen: false,
+      renderCount: 1,
+      setRenderCount(count) {
+        set({
+          renderCount: count
+        })
+      },
       switchFullScreen(el) {
         const isFull = isFullscreen();
         if(isFull) {

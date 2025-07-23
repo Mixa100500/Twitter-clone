@@ -33,7 +33,7 @@ import profile from '@icons/svg/profile.svg'
 import search from '@icons/svg/search.svg'
 import style from "@/feature/tweets/tweets.module.css";
 import {Loading} from "@/components/Loading/Loading.tsx";
-import {TweetServer} from "@/feature/tweets/TweetServer.tsx";
+import {TweetFetchDynamic} from "@/feature/tweets/components/TweetFetchDynamic.tsx";
 
 export default function Home () {
   return (
@@ -57,7 +57,7 @@ export default function Home () {
               <SectionNav text='Following' isFollowing={true}/>
             </div>
             <Suspense fallback={<Loading containerClass={style.loading}/>}>
-              <TweetServer />
+              <TweetFetchDynamic />
             </Suspense>
           </div>
           <aside className={headerS.asideRight}>
@@ -72,10 +72,10 @@ export default function Home () {
           </aside>
         </main>
         <aside className={headerS.menu}>
-          <nav>
+          <nav className={headerS.center}>
             <ul className={headerS.asideLeft}>
               <li className={headerS.imgWrapper}>
-                <a className={headerS.navLink}>
+                <a className={headerS.navLink} tabIndex={1}>
                   <Icon url={home} class={headerS.imgSvg}/>
                   <div className={headerS.navText}>Home</div>
                 </a>

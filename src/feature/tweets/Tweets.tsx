@@ -1,6 +1,6 @@
 'use client'
 
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import style from './tweets.module.css'
 import {Loading} from "@/components/Loading/Loading.tsx";
 import {defaultRangeExtractor, useWindowVirtualizer, Range} from "@tanstack/react-virtual";
@@ -19,14 +19,15 @@ export function Tweets () {
   const parentOffsetRef = useRef(0);
   const visibleRangeRef = useRef([0, 0]);
   const requestRef = useRef(false);
-  const overscunRef = useRef(12);
+  const overscunRef = useRef(1);
   const firstScanRef = useRef(true);
 
   const virtualizer = useWindowVirtualizer({
     count: ids.length,
-    estimateSize: () => 120,
+    estimateSize: () => 350,
     overscan: overscunRef.current,
-    scrollMargin: parentOffsetRef.current,
+    // scrollMargin: parentOffsetRef.current,
+    useAnimationFrameWithResizeObserver: true,
     rangeExtractor:
       // useCallback(
       (range: Range) => {
@@ -67,6 +68,17 @@ export function Tweets () {
     return <Loading containerClass={style.loading}/>
   }
   const items = virtualizer.getVirtualItems()
+  // list.map((_,virtualRow) => {
+  //   // const id = tweets.allIds[virtualRow.index]
+  //   const id = tweets.allIds[virtualRow]
+  //   console.log(id);
+  //   return <Tweet
+  //     key={id}
+  //     // index={virtualRow.index}
+  //     // refCallback={virtualizer.measureElement}
+  //     tweet={tweets.byId[id]}
+  //   />
+  // })
 
   return (
     <div className={style.timeline}>
@@ -91,7 +103,7 @@ export function Tweets () {
             <PlayerProvider>
               {items.map((virtualRow) => {
                 const id = tweets.allIds[virtualRow.index]
-
+                // const id = tweets.allIds[virtualRow]
                 return <Tweet
                   key={id}
                   index={virtualRow.index}

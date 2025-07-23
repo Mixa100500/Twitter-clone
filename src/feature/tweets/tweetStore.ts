@@ -1,6 +1,9 @@
 import {InitialTweet, Medias, ReferencedTweet, Tweet, TweetById, TweetPage} from "@/feature/tweets/types.ts";
 import {getMedias, getTweetMediaServer, getTweets, getTweetServer} from "@/feature/tweets/requests.ts";
 import {createStore} from "@/feature/createStore.ts";
+import {cookies} from "next/headers";
+import {cookiesMap} from "@/utils/config.ts";
+import {AUTHORIZATION} from "../../../next.config.ts";
 
 const ElonId = "44196397"
 // type RemoveById = Record<string, string>
@@ -282,112 +285,4 @@ export const createPlayerStore = (
       return [firstPage?.prevToken, lastPage?.nextToken]
     },
   }), 'tweets')
-}
-
-function sleep(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-export const getTweetWithMediaServer = async (token: string): Promise<InitialTweet> => {
-  await sleep(2000);
-  const result = await getTweetServer(token);
-
-  const tweetById: TweetById = {};
-  const tweetsIds: string[] = [];
-  const pageId = result.tweets[0].id;
-  const tweets: string[] = [];
-  let resolved: InitialTweet = {
-    tweets: {
-      byId: {},
-      allIds: []
-    },
-    pages: {
-      byId: {},
-      allIds: []
-    },
-  }
-
-  result.tweets.forEach((tweet) => {
-    tweetsIds.push(tweet.id)
-    tweets.push(tweet.id)
-    tweetById[tweet.id] = tweet
-  })
-
-  const page: TweetPage = {
-    nextToken: result.meta.next_token,
-    prevToken: result.meta.previous_token,
-    tweets,
-  }
-
-  const pagesAllIds: string[] = [
-    pageId,
-  ]
-  const newTweetAllIds: string[] = [
-    ...tweetsIds,
-  ]
-
-  resolved = {
-    tweets: {
-      byId: {
-        ...tweetById,
-      },
-      allIds: newTweetAllIds,
-    },
-    pages: {
-      byId: {
-        [pageId]: page
-      },
-      allIds: pagesAllIds,
-    }
-  }
-
-  const medias = await getTweetMediaServer(token, result.refIds)
-  const newTweetById: TweetById = {}
-
-  tweetsIds.forEach((id) => {
-    const oldTweet = tweetById[id]
-
-    const newTweet: Tweet = {
-      ...oldTweet
-    }
-
-    const keys = oldTweet.referenced_tweet?.base.attachments?.media_keys
-    const refTweetMedias: Medias = []
-
-    if(keys) {
-
-      keys.forEach(key => {
-        refTweetMedias.push(medias[key.slice(2)])
-      })
-
-      if(oldTweet.referenced_tweet?.base) {
-        const newRefTweet: ReferencedTweet = {
-          ...oldTweet.referenced_tweet,
-          base: {
-            ...oldTweet.referenced_tweet?.base,
-            medias: refTweetMedias,
-          }
-        }
-
-        newTweet.referenced_tweet = newRefTweet
-      }
-    }
-
-    newTweetById[id] = newTweet
-  })
-
-  resolved = {
-    tweets: {
-      ...resolved.tweets,
-      byId: {
-        ...resolved.tweets.byId,
-        ...newTweetById,
-      }
-    },
-    pages: {
-      ...resolved.pages
-    }
-  }
-
-  return resolved
 }

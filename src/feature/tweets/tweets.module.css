@@ -129,6 +129,13 @@
   height: 120px;
 }
 
+.noMore {
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .quoted {
   border: 1px solid var(--grey-600);
   border-radius: 16px;

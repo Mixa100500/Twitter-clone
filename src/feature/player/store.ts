@@ -1,6 +1,7 @@
 import {createStore} from "@/feature/createStore.ts";
 import Hls from "hls.js";
 import {throttle} from "@/utils/throttle.ts";
+import type { LoaderContext } from 'hls.js';
 
 type PlayerState = {
   isPlaying: boolean
@@ -616,9 +617,24 @@ export function createPlayerStore () {
 
           if(checkAndSetSupport()) {
 
-            hls = new Hls();
-            hls.loadSource(url);
+            // hls = new Hls();
+            // hls.loadSource(url);
+            // hls.attachMedia(video);
+            console.log(url);
+            const encodedUrl = encodeURIComponent(url);
+            const proxyUrl = `/api/twitter-video?url=${encodedUrl}`;
+
+            hls = new Hls({
+              fetchSetup: (context: LoaderContext, initParams: RequestInit): Request => {
+                if (context.url.startsWith('/api/twitter-video')) {
+                  return new Request(context.url, initParams);
+                }
+                return new Request(context.url, initParams);
+              },
+            });
+            hls.loadSource(proxyUrl);
             hls.attachMedia(video);
+
             hls.on(Hls.Events.ERROR, (event, data) => {
               console.error('HLS Error:', data);
 

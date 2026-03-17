@@ -270,7 +270,7 @@ export function Player (props: Props) {
           <img src={preview} className={imageClassName} loading='lazy'/>
         </div>
         <div className="videoContainer" ref={refVideoContainer} data-player-id={hlsUrl}>
-          {/*container.prepend(video) from player store with one instance of player for autoplaying*/}
+          {/*container.prepend(video) from player store.ts with one instance of player for autoplaying*/}
         </div>
         {!needPlayButton && isCurrent && isLoading !== undefined && isLoading === true && <Loading white={true} containerClass={style.spinner}/>}
         {!needPlayButton && isLoading === false && isFirstRenderWithoutPlayer || hlsUrl && isPlaying !== undefined && <ControlBar refVolumeChanging={refVolumeChanging} playButtonClickWithoutFullscreen={playButtonClickWithoutFullscreen} playButtonClick={switchPlayOnClick} ended={ended} playerRef={playerRef.current} isPlaying={isPlaying} isVisible={needPlayButton ? false : isHover} withVideo={isCurrent} id={hlsUrl}/>}

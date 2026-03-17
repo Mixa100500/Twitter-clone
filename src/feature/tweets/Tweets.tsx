@@ -19,12 +19,12 @@ export function Tweets () {
   const parentOffsetRef = useRef(0);
   const visibleRangeRef = useRef([0, 0]);
   const requestRef = useRef(false);
-  const overscunRef = useRef(1);
+  const overscunRef = useRef(30);
   const firstScanRef = useRef(true);
 
   const virtualizer = useWindowVirtualizer({
     count: ids.length,
-    estimateSize: () => 350,
+    estimateSize: () => 500,
     overscan: overscunRef.current,
     // scrollMargin: parentOffsetRef.current,
     useAnimationFrameWithResizeObserver: true,
@@ -115,6 +115,8 @@ export function Tweets () {
             <div className={style.footerSpace}></div>
           </div>
         </div>
+        {tweets.allIds.length === 30 || <Loading containerClass={style.loading}/>}
+        {tweets.allIds.length === 30 && <div className={style.noMore}>no more tweets</div>}
       </div>
     </div>
   )

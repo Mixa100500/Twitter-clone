@@ -206,6 +206,8 @@ export function ControlBar ({refVolumeChanging, id, withVideo, isVisible, isPlay
 
   const refTarget = useRef<HTMLDivElement | null>(null)
 
+  console.log(duration, 'duration');
+
   return (
     <>
       <div className={style.mouseLeaveTarget} ref={refTarget} onPointerMove={pointerMove} onPointerLeave={pointerUp} onMouseUp={mouseUp} onPointerUp={pointerUp} onPointerCancel={pointerUp} onPointerDown={onPointerDown}>
@@ -219,11 +221,15 @@ export function ControlBar ({refVolumeChanging, id, withVideo, isVisible, isPlay
           </div>
           <div className={style.barButtons}>
             <Play playButtonClick={playButtonClick} ended={ended} isPlaying={isPlaying} id={id} className={visible}/>
-            {duration !== undefined && !isNaN(duration) && <Timer isVisible={!isVisible} time={duration - currentTime}/>}
+            {duration !== undefined && !Number.isNaN(duration) && (
+              <Timer isVisible={!isVisible} time={duration - currentTime}/>
+            )}
             <div className={barLeftClassname}>
-              {duration && <div className={style.time}>
-                {formatTimer(Math.round(currentTime))} / {formatTimer(duration)}
-              </div>}
+              {duration !== undefined && !Number.isNaN(duration) &&
+                <div className={style.time}>
+                  {formatTimer(Math.round(currentTime))} / {formatTimer(duration)}
+                </div>
+              }
               <Volume refVolumeChanging={refVolumeChanging} withVideo={withVideo}/>
               <FullScreen playerRef={playerRef} />
             </div>

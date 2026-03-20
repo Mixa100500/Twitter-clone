@@ -709,7 +709,10 @@ export function createPlayerStore () {
               });
             });
           } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.src = url;
+
+            const encodedUrl = encodeURIComponent(url);
+            const proxyUrl = `/api/twitter-video?url=${encodedUrl}`;
+            video.src = proxyUrl;
             console.log('set player state to loading');
             set((state) => {
               return {
